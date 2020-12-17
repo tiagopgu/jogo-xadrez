@@ -1,4 +1,5 @@
 ﻿using Xadrez.Domain.Entities;
+using Xadrez.Domain.Entities.Enums;
 
 namespace Xadrez.Console
 {
@@ -9,9 +10,21 @@ namespace Xadrez.Console
             Board board = new Board(8, 8);
 
             System.Console.WriteLine();
-
             PrintBoard(board);
+            System.Console.WriteLine();
 
+            // Add Piece
+            Position position = new Position(1, 6);
+            Piece piece = new Piece(position, Color.Black, board);
+
+            Position position2 = new Position(5, 8);
+            Piece piece2 = new Piece(position2, Color.White, board);
+
+            board.AddPiece(piece);
+            board.AddPiece(piece2);
+
+            System.Console.WriteLine();
+            PrintBoard(board);
             System.Console.WriteLine();
         }
 
@@ -30,7 +43,14 @@ namespace Xadrez.Console
                     if (piece == null)
                         System.Console.Write("-  ");
                     else
-                        System.Console.Write("P  ");
+                    {
+                        if (piece.Color == Color.Black)
+                            System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+
+                        System.Console.Write($"{piece}  ");
+
+                        System.Console.ForegroundColor = System.ConsoleColor.White;
+                    }   
 
                     if (i == board.AmountLines - 1)
                         columnIdentificationLine += $"{j + 1}  ";

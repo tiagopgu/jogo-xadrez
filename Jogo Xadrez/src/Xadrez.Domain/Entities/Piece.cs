@@ -18,5 +18,10 @@ namespace Xadrez.Domain.Entities
             Color = color;
             Board = board;
         }
+
+        public override string ToString()
+        {
+            return "P";
+        }
     }
 }
