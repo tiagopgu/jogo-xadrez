@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jogo-xadrex.Core", "src\jogo-xadrex.Core\jogo-xadrex.Core.csproj", "{7D23C783-0BB3-4DC9-8A75-B886E937E9D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xadrez.Core", "src\Xadrez.Core\Xadrez.Core.csproj", "{7D23C783-0BB3-4DC9-8A75-B886E937E9D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jogo-xadrez.Console", "src\jogo-xadrez.Console\jogo-xadrez.Console.csproj", "{2A8E8693-4D16-4C43-AAEB-979BE9D5D5B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xadrez.Console", "src\Xadrez.Console\Xadrez.Console.csproj", "{2A8E8693-4D16-4C43-AAEB-979BE9D5D5B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jogo-xadrez.Domain", "src\jogo-xadrez.Domain\jogo-xadrez.Domain.csproj", "{915715E7-B70E-49CA-9AD0-C55EA8EDD04E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xadrez.Domain", "src\Xadrez.Domain\Xadrez.Domain.csproj", "{915715E7-B70E-49CA-9AD0-C55EA8EDD04E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

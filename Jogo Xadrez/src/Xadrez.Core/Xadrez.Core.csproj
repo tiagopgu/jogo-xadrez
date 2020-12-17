@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>jogo_xadrex.Core</RootNamespace>
+    <RootNamespace>Xadrez.Core</RootNamespace>
+    <AssemblyName>Xadrez.Core</AssemblyName>
   </PropertyGroup>
 
 </Project>
