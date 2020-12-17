@@ -12,16 +12,10 @@ namespace Xadrez.Domain.Entities
 
         public uint AmountMoviments { get; protected set; }
 
-        public Piece(Position position, Color color, Board board)
+        public Piece(Color color, Board board)
         {
-            Position = position;
             Color = color;
             Board = board;
-        }
-
-        public override string ToString()
-        {
-            return "P";
         }
     }
 }
