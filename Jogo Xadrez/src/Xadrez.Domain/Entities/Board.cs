@@ -15,5 +15,12 @@
 
             _pieces = new Piece[AmountLines, AmountColumns];
         }
+
+        public Piece[,] Print()
+        {
+            var obj = _pieces.Clone() as Piece[,];
+
+            return obj;
+        }
     }
 }
