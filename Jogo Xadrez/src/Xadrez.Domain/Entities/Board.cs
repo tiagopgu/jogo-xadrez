@@ -16,11 +16,9 @@
             _pieces = new Piece[AmountLines, AmountColumns];
         }
 
-        public Piece[,] Print()
+        public Piece GetPiece(Position position)
         {
-            var obj = _pieces.Clone() as Piece[,];
-
-            return obj;
+            return _pieces[position.Line, position.Column];
         }
     }
 }

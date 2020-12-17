@@ -8,31 +8,31 @@ namespace Xadrez.Console
         {
             Board board = new Board(8, 8);
 
-            var boardPrint = board.Print();
-
             System.Console.WriteLine();
 
-            PrintBoard(boardPrint);
+            PrintBoard(board);
 
             System.Console.WriteLine();
         }
 
-        static void PrintBoard(Piece[,] board)
+        static void PrintBoard(Board board)
         {
             string columnIdentificationLine = "";
 
-            for (int i = 0; i < board.GetLength(0); i++)
+            for (byte i = 0; i < board.AmountLines; i++)
             {
-                System.Console.Write($"\t{board.GetLength(0) - i}  ");
+                System.Console.Write($"\t{board.AmountLines - i}  ");
 
-                for (int j = 0; j < board.GetLength(1); j++)
+                for (byte j = 0; j < board.AmountColumns; j++)
                 {
-                    if (board[i, j] == null)
+                    Piece piece = board.GetPiece(new Position(i, j));
+
+                    if (piece == null)
                         System.Console.Write("-  ");
                     else
                         System.Console.Write("P  ");
 
-                    if (i == board.GetLength(0) - 1)
+                    if (i == board.AmountLines - 1)
                         columnIdentificationLine += $"{j + 1}  ";
                 }
 
