@@ -2,7 +2,7 @@
 
 namespace Xadrez.Domain.Entities
 {
-    public class Piece
+    public abstract class Piece
     {
         public Position Position { get; set; }
 

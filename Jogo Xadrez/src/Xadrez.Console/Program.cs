@@ -1,5 +1,6 @@
 ﻿using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Entities.Pieces;
 
 namespace Xadrez.Console
 {
@@ -9,19 +10,34 @@ namespace Xadrez.Console
         {
             Board board = new Board(8, 8);
 
-            System.Console.WriteLine();
-            PrintBoard(board);
-            System.Console.WriteLine();
+            // Peças Brancas
+            Position positionW = new Position(2, 5);
+            Piece kingW = new King(Color.White, board);
 
-            // Add Piece
-            Position position = new Position(1, 6);
-            Piece piece = new Piece(position, Color.Black, board);
+            Position positionW1 = new Position(1, 1);
+            Piece rookW = new Rook(Color.White, board);
 
-            Position position2 = new Position(5, 8);
-            Piece piece2 = new Piece(position2, Color.White, board);
+            Position positionW2 = new Position(1, 8);
+            Piece rookW2 = new Rook(Color.White, board);
 
-            board.AddPiece(piece);
-            board.AddPiece(piece2);
+            board.AddPiece(kingW, positionW);
+            board.AddPiece(rookW, positionW1);
+            board.AddPiece(rookW2, positionW2);
+
+            // Peças Pretas
+
+            Position positionB = new Position(6, 5);
+            Piece kingB = new King(Color.Black, board);
+
+            Position positionB1 = new Position(8, 1);
+            Piece rookB = new Rook(Color.Black, board);
+
+            Position positionB2 = new Position(7, 4);
+            Piece rookB2 = new Rook(Color.Black, board);
+
+            board.AddPiece(kingB, positionB);
+            board.AddPiece(rookB, positionB1);
+            board.AddPiece(rookB2, positionB2);
 
             System.Console.WriteLine();
             PrintBoard(board);
