@@ -16,6 +16,14 @@
             _pieces = new Piece[AmountLines, AmountColumns];
         }
 
+        public void AddPiece(Piece piece)
+        {
+            byte posicaoLine = (byte)(AmountLines - piece.Position.Line);
+            byte posicaoColumn = (byte)(piece.Position.Column - 1);
+
+            _pieces[posicaoLine, posicaoColumn] = piece;
+        }
+
         public Piece GetPiece(Position position)
         {
             return _pieces[position.Line, position.Column];
