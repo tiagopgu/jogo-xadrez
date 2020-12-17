@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Xadrez.Domain.Entities;
 
 namespace Xadrez.Console
 {
@@ -6,7 +6,9 @@ namespace Xadrez.Console
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Position position = new Position(5, 6);
+
+            System.Console.WriteLine(position);
         }
     }
 }

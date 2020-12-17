@@ -7,4 +7,8 @@
     <AssemblyName>Xadrez.Console</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Xadrez.Domain\Xadrez.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
