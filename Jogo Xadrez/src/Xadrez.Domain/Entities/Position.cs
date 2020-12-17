@@ -2,11 +2,11 @@
 {
     public class Position
     {
-        public sbyte Line { get; set; }
+        public byte Line { get; set; }
 
-        public sbyte Column { get; set; }
+        public byte Column { get; set; }
 
-        public Position(sbyte line, sbyte column)
+        public Position(byte line, byte column)
         {
             Line = line;
             Column = column;
