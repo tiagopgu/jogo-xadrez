@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jogo-xadrex.Core", "src\jog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jogo-xadrez.Console", "src\jogo-xadrez.Console\jogo-xadrez.Console.csproj", "{2A8E8693-4D16-4C43-AAEB-979BE9D5D5B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jogo-xadrez.Domain", "src\jogo-xadrez.Domain\jogo-xadrez.Domain.csproj", "{915715E7-B70E-49CA-9AD0-C55EA8EDD04E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2A8E8693-4D16-4C43-AAEB-979BE9D5D5B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A8E8693-4D16-4C43-AAEB-979BE9D5D5B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A8E8693-4D16-4C43-AAEB-979BE9D5D5B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{915715E7-B70E-49CA-9AD0-C55EA8EDD04E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{915715E7-B70E-49CA-9AD0-C55EA8EDD04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{915715E7-B70E-49CA-9AD0-C55EA8EDD04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{915715E7-B70E-49CA-9AD0-C55EA8EDD04E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
