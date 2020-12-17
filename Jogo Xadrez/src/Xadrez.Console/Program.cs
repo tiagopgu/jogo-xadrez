@@ -27,7 +27,10 @@ namespace Xadrez.Console
 
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    System.Console.Write("-  ");
+                    if (board[i, j] == null)
+                        System.Console.Write("-  ");
+                    else
+                        System.Console.Write("P  ");
 
                     if (i == board.GetLength(0) - 1)
                         columnIdentificationLine += $"{j + 1}  ";
