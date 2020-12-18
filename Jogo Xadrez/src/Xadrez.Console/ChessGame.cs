@@ -48,12 +48,9 @@ namespace Xadrez.Console
                         System.Console.Write("-  ");
                     else
                     {
-                        if (piece.Color == Color.Black)
-                            System.Console.ForegroundColor = ConsoleColor.Yellow;
+                        PrintPiece(piece);
 
-                        System.Console.Write($"{piece}  ");
-
-                        System.Console.ForegroundColor = ConsoleColor.White;
+                        System.Console.Write($"  ");
                     }
 
                     if (i == Board.AmountLines)
@@ -66,9 +63,25 @@ namespace Xadrez.Console
             System.Console.Write($"\t   {columnIdentificationLine}");
         }
 
+        #region Privates Methods
+
         private Position GetPosition(byte line, char charColumn)
         {
             return new Position(line, (byte)(charColumn - 'a' + 1));
         }
+
+        private void PrintPiece(Piece piece)
+        {
+            ConsoleColor originalColor = System.Console.ForegroundColor;
+
+            if (piece.Color == Color.Black)
+                System.Console.ForegroundColor = ConsoleColor.Yellow;
+
+            System.Console.Write(piece);
+
+            System.Console.ForegroundColor = originalColor;
+        }
+
+        #endregion
     }
 }
