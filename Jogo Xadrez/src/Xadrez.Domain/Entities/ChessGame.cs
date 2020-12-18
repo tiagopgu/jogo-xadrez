@@ -16,7 +16,8 @@ namespace Xadrez.Domain
             Shift = 1;
             CurrentPlayer = Color.White;
 
-            PutPieces();
+            PutWhitePieces();
+            PutBlackPieces();
         }
 
         public void AddPiece(Piece piece, ChessPosition position)
@@ -61,20 +62,68 @@ namespace Xadrez.Domain
             return new Position(position.Line, (byte)(position.Column - 'a' + 1));
         }
 
-        private void PutPieces()
+        private void PutWhitePieces()
         {
-            // White Pieces
+            // Pawns
 
-            AddPiece(new King(Color.White, Board), new ChessPosition(2, 'e'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(2, 'a'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(2, 'b'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(2, 'c'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(2, 'd'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(2, 'e'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(2, 'f'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(2, 'g'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(2, 'h'));
+
+            // Rooks
             AddPiece(new Rook(Color.White, Board), new ChessPosition(1, 'a'));
             AddPiece(new Rook(Color.White, Board), new ChessPosition(1, 'h'));
-            AddPiece(new Pawn(Color.White, Board), new ChessPosition(3, 'h'));
 
-            // Black Pieces
-            AddPiece(new King(Color.Black, Board), new ChessPosition(6, 'e'));
-            AddPiece(new Rook(Color.Black, Board), new ChessPosition(8, 'a'));
-            AddPiece(new Rook(Color.Black, Board), new ChessPosition(7, 'd'));
+            // Knight
+            AddPiece(new Knight(Color.White, Board), new ChessPosition(1, 'b'));
+            AddPiece(new Knight(Color.White, Board), new ChessPosition(1, 'g'));
+
+            // Bishops
+            AddPiece(new Bishop(Color.White, Board), new ChessPosition(1, 'c'));
+            AddPiece(new Bishop(Color.White, Board), new ChessPosition(1, 'f'));
+
+            // King
+            AddPiece(new King(Color.White, Board), new ChessPosition(1, 'd'));
+
+            // Queen
+            AddPiece(new Queen(Color.White, Board), new ChessPosition(1, 'e'));
+        }
+
+        private void PutBlackPieces()
+        {
+            // Pawns
+
+            AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'a'));
+            AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'b'));
             AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'c'));
+            AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'd'));
+            AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'e'));
+            AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'f'));
+            AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'g'));
+            AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'h'));
+
+            // Rooks
+            AddPiece(new Rook(Color.Black, Board), new ChessPosition(8, 'a'));
+            AddPiece(new Rook(Color.Black, Board), new ChessPosition(8, 'h'));
+
+            // Knight
+            AddPiece(new Knight(Color.Black, Board), new ChessPosition(8, 'b'));
+            AddPiece(new Knight(Color.Black, Board), new ChessPosition(8, 'g'));
+
+            // Bishops
+            AddPiece(new Bishop(Color.Black, Board), new ChessPosition(8, 'c'));
+            AddPiece(new Bishop(Color.Black, Board), new ChessPosition(8, 'f'));
+
+            // King
+            AddPiece(new King(Color.Black, Board), new ChessPosition(8, 'd'));
+
+            // Queen
+            AddPiece(new Queen(Color.Black, Board), new ChessPosition(8, 'e'));
         }
 
         #endregion
