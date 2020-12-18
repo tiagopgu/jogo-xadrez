@@ -20,6 +20,9 @@ namespace Xadrez.Domain.Entities
 
         public void AddPiece(Piece piece, Position position)
         {
+            if (ExistsPiece(position))
+                throw new BoardException("A piece already exists in the informed position");
+
             Position adjustedPosition = GetAdjustedPosition(position);
 
             _pieces[adjustedPosition.Line, adjustedPosition.Column] = piece;
@@ -33,6 +36,8 @@ namespace Xadrez.Domain.Entities
 
             return _pieces[adjustedPosition.Line, adjustedPosition.Column];
         }
+
+        #region Privates Methods
 
         private Position GetAdjustedPosition(Position position)
         {
@@ -52,5 +57,12 @@ namespace Xadrez.Domain.Entities
             if (validLine == false || validColumn == false)
                 throw new BoardException("Invalid position");
         }
+
+        private bool ExistsPiece(Position position)
+        {
+            return GetPiece(position) != null;
+        }
+
+        #endregion
     }
 }

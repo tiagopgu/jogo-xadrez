@@ -24,6 +24,7 @@ namespace Xadrez.Console
                 game.AddPiece(new King(Color.Black, game.Board), 6, 5);
                 game.AddPiece(new Rook(Color.Black, game.Board), 8, 1);
                 game.AddPiece(new Rook(Color.Black, game.Board), 7, 4);
+                game.AddPiece(new Pawn(Color.Black, game.Board), 7, 3);
 
                 System.Console.WriteLine();
 
