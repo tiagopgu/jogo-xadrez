@@ -25,11 +25,11 @@ namespace Xadrez.Console
                 game.AddPiece(new Rook(Color.Black, game.Board), 7, 'd');
                 game.AddPiece(new Pawn(Color.Black, game.Board), 7, 'c');
 
-                System.Console.WriteLine();
-
                 game.PrintBoard();
 
-                System.Console.WriteLine();
+                game.RemovePiece(7, 'c');
+
+                game.PrintBoard();
 
                 System.Console.WriteLine(game.GetPiece(7, 'd')?.ToString() ?? "Nenhuma peça");
             }

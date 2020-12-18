@@ -20,6 +20,13 @@ namespace Xadrez.Console
             Board.AddPiece(piece, position);
         }
 
+        public Piece RemovePiece(byte line, char charColumn)
+        {
+            Position position = GetPosition(line, charColumn);
+
+            return Board.RemovePiece(position);
+        }
+
         public Piece GetPiece(byte line, char charColumn)
         {
             Position position = GetPosition(line, charColumn);
@@ -31,6 +38,8 @@ namespace Xadrez.Console
         {
             string columnIdentificationLine = "";
             Position position = new Position(0, 0);
+
+            System.Console.WriteLine();
 
             for (byte i = Board.AmountLines; i > 0; i--)
             {
@@ -60,7 +69,7 @@ namespace Xadrez.Console
                 System.Console.WriteLine();
             }
 
-            System.Console.Write($"\t   {columnIdentificationLine}");
+            System.Console.Write($"\t   {columnIdentificationLine}\n\n");
         }
 
         #region Privates Methods

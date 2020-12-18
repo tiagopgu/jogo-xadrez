@@ -30,6 +30,22 @@ namespace Xadrez.Domain.Entities
             piece.Position = position;
         }
 
+        public Piece RemovePiece(Position position)
+        {
+            Piece piece = GetPiece(position);
+
+            if (piece != null)
+            {
+                piece.Position = null;
+
+                Position adjustedPosition = GetAdjustedPosition(position);
+                
+                _pieces[adjustedPosition.Line, adjustedPosition.Column] = null;
+            }
+
+            return piece;
+        }
+
         public Piece GetPiece(Position position)
         {
             Position adjustedPosition = GetAdjustedPosition(position);
