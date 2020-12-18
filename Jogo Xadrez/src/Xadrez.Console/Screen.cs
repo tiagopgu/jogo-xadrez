@@ -12,6 +12,8 @@ namespace Xadrez.Console
 
         public static void PrintBoard(Board board)
         {
+            System.Console.Clear();
+
             string columnIdentificationLine = "";
             Position position = new Position(0, 0);
 
