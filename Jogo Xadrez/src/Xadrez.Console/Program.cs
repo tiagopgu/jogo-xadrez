@@ -17,9 +17,9 @@ namespace Xadrez.Console
             {
                 Screen.PrintBoard(game.Board);
 
-                //game.RemovePiece(new ChessPosition(7, 'c'));
+                game.RemovePiece(new ChessPosition(7, 'c'));
 
-                //Screen.PrintBoard(game.Board);
+                Screen.PrintBoard(game.Board);
 
                 //game.MovePiece(new ChessPosition(8, 'a'), new ChessPosition(1, 'a'));
 

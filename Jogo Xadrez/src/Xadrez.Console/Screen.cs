@@ -6,18 +6,22 @@ namespace Xadrez.Console
 {
     public static class Screen
     {
+        private static byte _chessHouseWidth = 3;
+        private static ConsoleColor _defaultBackgroundColor = ConsoleColor.Black;
+        private static ConsoleColor _defaultForegroundColor = ConsoleColor.Gray;
+
         public static void PrintBoard(Board board)
         {
             string columnIdentificationLine = "";
             Position position = new Position(0, 0);
 
-            System.Console.WriteLine();
+            System.Console.WriteLine("\n");
 
             for (byte i = board.AmountLines; i > 0; i--)
             {
                 position.Line = i;
 
-                System.Console.Write($"\t{i}  ");
+                System.Console.Write($"\t{i} ");
 
                 for (byte j = 1; j <= board.AmountColumns; j++)
                 {
@@ -25,14 +29,11 @@ namespace Xadrez.Console
 
                     Piece piece = board.GetPiece(position);
 
-                    if (piece == null)
-                        System.Console.Write("-  ");
-                    else
-                    {
-                        PrintPiece(piece);
+                    SetBackgroundCheese(i, j);
 
-                        System.Console.Write($"  ");
-                    }
+                    PrintPiece(piece);
+
+                    SetBackgroundCheese(reset: true);
 
                     if (i == board.AmountLines)
                         columnIdentificationLine += $"{(char)('a' + j - 1)}  ";
@@ -48,14 +49,37 @@ namespace Xadrez.Console
 
         private static void PrintPiece(Piece piece)
         {
-            ConsoleColor originalColor = System.Console.ForegroundColor;
+            if (piece == null)
+                System.Console.Write(new string(' ', _chessHouseWidth));
+            else
+            {
+                if (piece.Color == Color.Black)
+                    System.Console.ForegroundColor = ConsoleColor.Black;
+                else
+                    System.Console.ForegroundColor = ConsoleColor.White;
 
-            if (piece.Color == Color.Black)
-                System.Console.ForegroundColor = ConsoleColor.Yellow;
+                string pieceName = piece.ToString();
+                string output = pieceName.PadLeft(pieceName.Length + ((_chessHouseWidth - pieceName.Length) / 2));
 
-            System.Console.Write(piece);
+                output = output.PadRight(output.Length + (_chessHouseWidth - pieceName.Length) / 2);
 
-            System.Console.ForegroundColor = originalColor;
+                System.Console.Write(output);
+
+                System.Console.ForegroundColor = _defaultForegroundColor;
+            }
+        }
+
+        private static void SetBackgroundCheese(byte line = 0, byte column = 0, bool reset = false)
+        {
+            if (reset)
+                System.Console.BackgroundColor = _defaultBackgroundColor;
+            else
+            {
+                if ((line % 2 == 0 && column % 2 != 0) || (line % 2 != 0 && column % 2 == 0))
+                    System.Console.BackgroundColor = ConsoleColor.DarkGray;
+                else
+                    System.Console.BackgroundColor = ConsoleColor.DarkCyan;
+            }
         }
 
         #endregion
