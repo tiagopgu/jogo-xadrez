@@ -21,7 +21,7 @@ namespace Xadrez.Console
 
                 Screen.PrintBoard(game.Board);
 
-                game.MovePiece(new ChessPosition(7, 'd'), new ChessPosition(5, 'a'));
+                game.MovePiece(new ChessPosition(8, 'a'), new ChessPosition(1, 'a'));
 
                 Screen.PrintBoard(game.Board);
             }

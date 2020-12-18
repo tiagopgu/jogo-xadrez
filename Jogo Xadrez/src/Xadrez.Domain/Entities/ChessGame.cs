@@ -46,6 +46,8 @@ namespace Xadrez.Domain
 
             if (piece != null)
             {
+                Piece capturedPiece = RemovePiece(destiny);
+
                 AddPiece(piece, destiny);
                 
                 piece.IncreaseMovement();
