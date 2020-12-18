@@ -18,17 +18,26 @@
 
         public void AddPiece(Piece piece, Position position)
         {
-            byte posicaoLine = (byte)(AmountLines - position.Line);
-            byte posicaoColumn = (byte)(position.Column - 1);
+            Position adjustedPosition = GetAdjustedPosition(position);
 
-            _pieces[posicaoLine, posicaoColumn] = piece;
+            _pieces[adjustedPosition.Line, adjustedPosition.Column] = piece;
 
             piece.Position = position;
         }
 
         public Piece GetPiece(Position position)
         {
-            return _pieces[position.Line, position.Column];
+            Position adjustedPosition = GetAdjustedPosition(position);
+
+            return _pieces[adjustedPosition.Line, adjustedPosition.Column];
+        }
+
+        private Position GetAdjustedPosition(Position position)
+        {
+            byte line = (byte)(AmountLines - position.Line);
+            byte column = (byte)(position.Column - 1);
+
+            return new Position(line, column);
         }
     }
 }
