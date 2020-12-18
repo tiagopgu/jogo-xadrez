@@ -1,5 +1,4 @@
 ﻿using System;
-using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Enums;
 using Xadrez.Domain.Entities.Exceptions;
 using Xadrez.Domain.Entities.Pieces;
@@ -16,15 +15,15 @@ namespace Xadrez.Console
             {
                 // Peças Brancas
 
-                game.AddPiece(new King(Color.White, game.Board), 2, 5);
-                game.AddPiece(new Rook(Color.White, game.Board), 1, 1);
-                game.AddPiece(new Rook(Color.White, game.Board), 1, 8);
+                game.AddPiece(new King(Color.White, game.Board), 2, 'e');
+                game.AddPiece(new Rook(Color.White, game.Board), 1, 'a');
+                game.AddPiece(new Rook(Color.White, game.Board), 1, 'h');
 
                 // Peças Pretas
-                game.AddPiece(new King(Color.Black, game.Board), 6, 5);
-                game.AddPiece(new Rook(Color.Black, game.Board), 8, 1);
-                game.AddPiece(new Rook(Color.Black, game.Board), 7, 4);
-                game.AddPiece(new Pawn(Color.Black, game.Board), 7, 3);
+                game.AddPiece(new King(Color.Black, game.Board), 6, 'e');
+                game.AddPiece(new Rook(Color.Black, game.Board), 8, 'a');
+                game.AddPiece(new Rook(Color.Black, game.Board), 7, 'd');
+                game.AddPiece(new Pawn(Color.Black, game.Board), 7, 'c');
 
                 System.Console.WriteLine();
 
@@ -32,9 +31,7 @@ namespace Xadrez.Console
 
                 System.Console.WriteLine();
 
-                Position position = new Position(7, 4);
-
-                System.Console.WriteLine(game.Board.GetPiece(position).ToString() ?? "Nenhuma peça");
+                System.Console.WriteLine(game.GetPiece(7, 'd')?.ToString() ?? "Nenhuma peça");
             }
             catch (BoardException ex)
             {

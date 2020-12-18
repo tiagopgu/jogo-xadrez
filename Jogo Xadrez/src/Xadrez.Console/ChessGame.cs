@@ -13,9 +13,18 @@ namespace Xadrez.Console
             Board = new Board(8, 8);
         }
 
-        public void AddPiece(Piece piece, byte line, byte column)
+        public void AddPiece(Piece piece, byte line, char charColumn)
         {
-            Board.AddPiece(piece, new Position(line, column));
+            Position position = GetPosition(line, charColumn);
+
+            Board.AddPiece(piece, position);
+        }
+
+        public Piece GetPiece(byte line, char charColumn)
+        {
+            Position position = GetPosition(line, charColumn);
+
+            return Board.GetPiece(position);
         }
 
         public void PrintBoard()
@@ -48,13 +57,18 @@ namespace Xadrez.Console
                     }
 
                     if (i == Board.AmountLines)
-                        columnIdentificationLine += $"{j}  ";
+                        columnIdentificationLine += $"{(char)('a' + j - 1)}  ";
                 }
 
                 System.Console.WriteLine();
             }
 
             System.Console.Write($"\t   {columnIdentificationLine}");
+        }
+
+        private Position GetPosition(byte line, char charColumn)
+        {
+            return new Position(line, (byte)(charColumn - 'a' + 1));
         }
     }
 }
