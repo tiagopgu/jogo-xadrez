@@ -47,6 +47,15 @@ namespace Xadrez.Console
             System.Console.Write($"\t   {columnIdentificationLine}\n\n");
         }
 
+        public static ChessPosition ReadChessPosition()
+        {
+            string input = System.Console.ReadLine();
+            byte line = byte.Parse(input[1].ToString());
+            char column = input[0];
+
+            return new ChessPosition(line, column);
+        }
+
         #region Privates Methods
 
         private static void PrintPiece(Piece piece)

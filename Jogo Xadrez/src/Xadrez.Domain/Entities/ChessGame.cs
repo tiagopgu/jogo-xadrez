@@ -7,8 +7,9 @@ namespace Xadrez.Domain
     public class ChessGame
     {
         public Board Board { get; private set; }
-        public int Shift { get; private set; }
+        public byte Shift { get; private set; }
         public Color CurrentPlayer { get; private set; }
+        public bool GameEnded { get; private set; }
 
         public ChessGame()
         {

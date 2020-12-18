@@ -1,9 +1,7 @@
 ﻿using System;
 using Xadrez.Domain;
 using Xadrez.Domain.Entities;
-using Xadrez.Domain.Entities.Enums;
 using Xadrez.Domain.Entities.Exceptions;
-using Xadrez.Domain.Entities.Pieces;
 
 namespace Xadrez.Console
 {
@@ -11,19 +9,24 @@ namespace Xadrez.Console
     {
         static void Main(string[] args)
         {
-            ChessGame game = new ChessGame();
-
             try
             {
-                Screen.PrintBoard(game.Board);
-
-                game.RemovePiece(new ChessPosition(7, 'c'));
+                ChessGame game = new ChessGame();
 
                 Screen.PrintBoard(game.Board);
 
-                game.MovePiece(new ChessPosition(8, 'a'), new ChessPosition(1, 'a'));
+                while (game.GameEnded == false)
+                {
+                    System.Console.Write("\tEnter the position of the piece to be moved (ex.: c5): ");
+                    ChessPosition startPosition = Screen.ReadChessPosition();
 
-                Screen.PrintBoard(game.Board);
+                    System.Console.Write("\tEnter the final position of the piece (ex.: d8): ");
+                    ChessPosition finalPosition = Screen.ReadChessPosition();
+
+                    game.MovePiece(startPosition, finalPosition);
+                    
+                    Screen.PrintBoard(game.Board);
+                }
             }
             catch (BoardException ex)
             {
