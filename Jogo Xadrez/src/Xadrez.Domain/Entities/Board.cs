@@ -1,4 +1,6 @@
-﻿namespace Xadrez.Domain.Entities
+﻿using Xadrez.Domain.Entities.Exceptions;
+
+namespace Xadrez.Domain.Entities
 {
     public class Board
     {
@@ -34,10 +36,21 @@
 
         private Position GetAdjustedPosition(Position position)
         {
+            ValidatePosition(position);
+
             byte line = (byte)(AmountLines - position.Line);
             byte column = (byte)(position.Column - 1);
 
             return new Position(line, column);
+        }
+
+        private void ValidatePosition(Position position)
+        {
+            bool validLine = position.Line > 0 && position.Line <= AmountLines;
+            bool validColumn = position.Column > 0 && position.Column <= AmountColumns;
+
+            if (validLine == false || validColumn == false)
+                throw new BoardException("Invalid position");
         }
     }
 }

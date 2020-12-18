@@ -1,5 +1,7 @@
-﻿using Xadrez.Domain.Entities;
+﻿using System;
+using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Entities.Exceptions;
 using Xadrez.Domain.Entities.Pieces;
 
 namespace Xadrez.Console
@@ -10,26 +12,37 @@ namespace Xadrez.Console
         {
             ChessGame game = new ChessGame();
 
-            // Peças Brancas
+            try
+            {
+                // Peças Brancas
 
-            game.AddPiece(new King(Color.White, game.Board), 2, 5);
-            game.AddPiece(new Rook(Color.White, game.Board), 1, 1);
-            game.AddPiece(new Rook(Color.White, game.Board), 1, 8);
+                game.AddPiece(new King(Color.White, game.Board), 2, 5);
+                game.AddPiece(new Rook(Color.White, game.Board), 1, 1);
+                game.AddPiece(new Rook(Color.White, game.Board), 1, 8);
 
-            // Peças Pretas
-            game.AddPiece(new King(Color.Black, game.Board), 6, 5);
-            game.AddPiece(new Rook(Color.Black, game.Board), 8, 1);
-            game.AddPiece(new Rook(Color.Black, game.Board), 7, 4);
+                // Peças Pretas
+                game.AddPiece(new King(Color.Black, game.Board), 6, 5);
+                game.AddPiece(new Rook(Color.Black, game.Board), 8, 1);
+                game.AddPiece(new Rook(Color.Black, game.Board), 7, 4);
 
-            System.Console.WriteLine();
+                System.Console.WriteLine();
 
-            game.PrintBoard();
+                game.PrintBoard();
 
-            System.Console.WriteLine();
+                System.Console.WriteLine();
 
-            Position position = new Position(7, 4);
+                Position position = new Position(7, 4);
 
-            System.Console.WriteLine(game.Board.GetPiece(position).ToString() ?? "Nenhuma peça");
+                System.Console.WriteLine(game.Board.GetPiece(position).ToString() ?? "Nenhuma peça");
+            }
+            catch (BoardException ex)
+            {
+                System.Console.WriteLine("\nError: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine("\nUnexpected error: " + ex.Message);
+            }
         }
     }
 }
