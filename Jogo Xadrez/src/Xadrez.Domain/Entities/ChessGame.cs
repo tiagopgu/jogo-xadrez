@@ -1,5 +1,6 @@
 ﻿using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Entities.Pieces;
 
 namespace Xadrez.Domain
 {
@@ -14,6 +15,8 @@ namespace Xadrez.Domain
             Board = new Board(8, 8);
             Shift = 1;
             CurrentPlayer = Color.White;
+
+            PutPieces();
         }
 
         public void AddPiece(Piece piece, ChessPosition position)
@@ -54,6 +57,22 @@ namespace Xadrez.Domain
         private Position GetPosition(ChessPosition position)
         {
             return new Position(position.Line, (byte)(position.Column - 'a' + 1));
+        }
+
+        private void PutPieces()
+        {
+            // White Pieces
+
+            AddPiece(new King(Color.White, Board), new ChessPosition(2, 'e'));
+            AddPiece(new Rook(Color.White, Board), new ChessPosition(1, 'a'));
+            AddPiece(new Rook(Color.White, Board), new ChessPosition(1, 'h'));
+            AddPiece(new Pawn(Color.White, Board), new ChessPosition(3, 'h'));
+
+            // Black Pieces
+            AddPiece(new King(Color.Black, Board), new ChessPosition(6, 'e'));
+            AddPiece(new Rook(Color.Black, Board), new ChessPosition(8, 'a'));
+            AddPiece(new Rook(Color.Black, Board), new ChessPosition(7, 'd'));
+            AddPiece(new Pawn(Color.Black, Board), new ChessPosition(7, 'c'));
         }
 
         #endregion

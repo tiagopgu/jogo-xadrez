@@ -15,18 +15,6 @@ namespace Xadrez.Console
 
             try
             {
-                // Peças Brancas
-
-                game.AddPiece(new King(Color.White, game.Board), new ChessPosition(2, 'e'));
-                game.AddPiece(new Rook(Color.White, game.Board), new ChessPosition(1, 'a'));
-                game.AddPiece(new Rook(Color.White, game.Board), new ChessPosition(1, 'h'));
-
-                // Peças Pretas
-                game.AddPiece(new King(Color.Black, game.Board), new ChessPosition(6, 'e'));
-                game.AddPiece(new Rook(Color.Black, game.Board), new ChessPosition(8, 'a'));
-                game.AddPiece(new Rook(Color.Black, game.Board), new ChessPosition(7, 'd'));
-                game.AddPiece(new Pawn(Color.Black, game.Board), new ChessPosition(7, 'c'));
-
                 Screen.PrintBoard(game.Board);
 
                 game.RemovePiece(new ChessPosition(7, 'c'));
