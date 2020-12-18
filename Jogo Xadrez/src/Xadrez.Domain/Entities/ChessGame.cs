@@ -16,32 +16,32 @@ namespace Xadrez.Domain
             CurrentPlayer = Color.White;
         }
 
-        public void AddPiece(Piece piece, byte line, char charColumn)
+        public void AddPiece(Piece piece, ChessPosition position)
         {
-            Position position = GetPosition(line, charColumn);
+            Position newPosition = GetPosition(position);
 
-            Board.AddPiece(piece, position);
+            Board.AddPiece(piece, newPosition);
         }
 
-        public Piece RemovePiece(byte line, char charColumn)
+        public Piece RemovePiece(ChessPosition position)
         {
-            Position position = GetPosition(line, charColumn);
+            Position newPosition = GetPosition(position);
 
-            return Board.RemovePiece(position);
+            return Board.RemovePiece(newPosition);
         }
 
-        public Piece GetPiece(byte line, char charColumn)
+        public Piece GetPiece(ChessPosition position)
         {
-            Position position = GetPosition(line, charColumn);
+            Position newPosition = GetPosition(position);
 
-            return Board.GetPiece(position);
+            return Board.GetPiece(newPosition);
         }
 
         #region Privates Methods
 
-        private Position GetPosition(byte line, char charColumn)
+        private Position GetPosition(ChessPosition position)
         {
-            return new Position(line, (byte)(charColumn - 'a' + 1));
+            return new Position(position.Line, (byte)(position.Column - 'a' + 1));
         }
 
         #endregion

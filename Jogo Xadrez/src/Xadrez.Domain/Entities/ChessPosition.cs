@@ -1,12 +1,12 @@
 ﻿namespace Xadrez.Domain.Entities
 {
-    public class Position
+    public class ChessPosition
     {
         public byte Line { get; set; }
 
-        public byte Column { get; set; }
+        public char Column { get; set; }
 
-        public Position(byte line, byte column)
+        public ChessPosition(byte line, char column)
         {
             Line = line;
             Column = column;
