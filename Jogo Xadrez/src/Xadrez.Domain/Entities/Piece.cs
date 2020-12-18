@@ -17,5 +17,10 @@ namespace Xadrez.Domain.Entities
             Color = color;
             Board = board;
         }
+
+        public void IncreaseMovement()
+        {
+            AmountMoviments++;
+        }
     }
 }

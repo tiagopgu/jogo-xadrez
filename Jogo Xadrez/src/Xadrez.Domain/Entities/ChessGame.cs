@@ -37,6 +37,18 @@ namespace Xadrez.Domain
             return Board.GetPiece(newPosition);
         }
 
+        public void MovePiece(ChessPosition origin, ChessPosition destiny)
+        {
+            Piece piece = RemovePiece(origin);
+
+            if (piece != null)
+            {
+                AddPiece(piece, destiny);
+                
+                piece.IncreaseMovement();
+            }
+        }
+
         #region Privates Methods
 
         private Position GetPosition(ChessPosition position)

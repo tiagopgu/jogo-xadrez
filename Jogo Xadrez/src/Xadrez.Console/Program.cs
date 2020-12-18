@@ -33,7 +33,9 @@ namespace Xadrez.Console
 
                 Screen.PrintBoard(game.Board);
 
-                System.Console.WriteLine(game.GetPiece(new ChessPosition(7, 'd'))?.ToString() ?? "Nenhuma peça");
+                game.MovePiece(new ChessPosition(7, 'd'), new ChessPosition(5, 'a'));
+
+                Screen.PrintBoard(game.Board);
             }
             catch (BoardException ex)
             {
