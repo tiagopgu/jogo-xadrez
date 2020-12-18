@@ -4,54 +4,26 @@ using Xadrez.Domain.Entities.Enums;
 
 namespace Xadrez.Console
 {
-    public class ChessGame
+    public static class Screen
     {
-        public Board Board { get; private set; }
-
-        public ChessGame()
-        {
-            Board = new Board(8, 8);
-        }
-
-        public void AddPiece(Piece piece, byte line, char charColumn)
-        {
-            Position position = GetPosition(line, charColumn);
-
-            Board.AddPiece(piece, position);
-        }
-
-        public Piece RemovePiece(byte line, char charColumn)
-        {
-            Position position = GetPosition(line, charColumn);
-
-            return Board.RemovePiece(position);
-        }
-
-        public Piece GetPiece(byte line, char charColumn)
-        {
-            Position position = GetPosition(line, charColumn);
-
-            return Board.GetPiece(position);
-        }
-
-        public void PrintBoard()
+        public static void PrintBoard(Board board)
         {
             string columnIdentificationLine = "";
             Position position = new Position(0, 0);
 
             System.Console.WriteLine();
 
-            for (byte i = Board.AmountLines; i > 0; i--)
+            for (byte i = board.AmountLines; i > 0; i--)
             {
                 position.Line = i;
 
                 System.Console.Write($"\t{i}  ");
 
-                for (byte j = 1; j <= Board.AmountColumns; j++)
+                for (byte j = 1; j <= board.AmountColumns; j++)
                 {
                     position.Column = j;
 
-                    Piece piece = Board.GetPiece(position);
+                    Piece piece = board.GetPiece(position);
 
                     if (piece == null)
                         System.Console.Write("-  ");
@@ -62,7 +34,7 @@ namespace Xadrez.Console
                         System.Console.Write($"  ");
                     }
 
-                    if (i == Board.AmountLines)
+                    if (i == board.AmountLines)
                         columnIdentificationLine += $"{(char)('a' + j - 1)}  ";
                 }
 
@@ -74,12 +46,7 @@ namespace Xadrez.Console
 
         #region Privates Methods
 
-        private Position GetPosition(byte line, char charColumn)
-        {
-            return new Position(line, (byte)(charColumn - 'a' + 1));
-        }
-
-        private void PrintPiece(Piece piece)
+        private static void PrintPiece(Piece piece)
         {
             ConsoleColor originalColor = System.Console.ForegroundColor;
 

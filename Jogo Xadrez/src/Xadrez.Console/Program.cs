@@ -1,4 +1,5 @@
 ﻿using System;
+using Xadrez.Domain;
 using Xadrez.Domain.Entities.Enums;
 using Xadrez.Domain.Entities.Exceptions;
 using Xadrez.Domain.Entities.Pieces;
@@ -25,11 +26,11 @@ namespace Xadrez.Console
                 game.AddPiece(new Rook(Color.Black, game.Board), 7, 'd');
                 game.AddPiece(new Pawn(Color.Black, game.Board), 7, 'c');
 
-                game.PrintBoard();
+                Screen.PrintBoard(game.Board);
 
                 game.RemovePiece(7, 'c');
 
-                game.PrintBoard();
+                Screen.PrintBoard(game.Board);
 
                 System.Console.WriteLine(game.GetPiece(7, 'd')?.ToString() ?? "Nenhuma peça");
             }
