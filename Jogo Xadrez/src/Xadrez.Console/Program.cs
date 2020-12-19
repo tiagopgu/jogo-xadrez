@@ -2,6 +2,7 @@
 using Xadrez.Domain;
 using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Exceptions;
+using Xadrez.Domain.Utils;
 
 namespace Xadrez.Console
 {
@@ -29,12 +30,17 @@ namespace Xadrez.Console
                     }
                     catch (FormatException)
                     {
-                        System.Console.WriteLine("\n\tError: You entered the position in an invalid format. Press any key to try the move again.");
+                        System.Console.WriteLine($"\n\tTypo: {SystemMessages.Typo}. {SystemMessages.TryAgain}.");
+                        System.Console.ReadKey();
+                    }
+                    catch (ChessGameException ex)
+                    {
+                        System.Console.WriteLine($"\n\tInvalid play: {ex.Message}. {SystemMessages.TryAgain}.");
                         System.Console.ReadKey();
                     }
                     catch (BoardException ex)
                     {
-                        System.Console.WriteLine($"\n\tError: {ex.Message}. Press any key to try the move again.");
+                        System.Console.WriteLine($"\n\tInvalid position: {ex.Message}. {SystemMessages.TryAgain}.");
                         System.Console.ReadKey();
                     }
 
