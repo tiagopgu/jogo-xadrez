@@ -53,6 +53,11 @@ namespace Xadrez.Domain.Entities
             return _pieces[adjustedPosition.Line, adjustedPosition.Column];
         }
 
+        public bool ExistsPiece(Position position)
+        {
+            return GetPiece(position) != null;
+        }
+
         #region Privates Methods
 
         private Position GetAdjustedPosition(Position position)
@@ -65,18 +70,13 @@ namespace Xadrez.Domain.Entities
             return new Position(line, column);
         }
 
-        private void ValidatePosition(Position position)
+        public void ValidatePosition(Position position)
         {
             bool validLine = position.Line > 0 && position.Line <= AmountLines;
             bool validColumn = position.Column > 0 && position.Column <= AmountColumns;
 
             if (validLine == false || validColumn == false)
                 throw new BoardException("Invalid position");
-        }
-
-        private bool ExistsPiece(Position position)
-        {
-            return GetPiece(position) != null;
         }
 
         #endregion

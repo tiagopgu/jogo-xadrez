@@ -10,6 +10,11 @@ namespace Xadrez.Domain.Entities.Pieces
 
         }
 
+        public override bool ValidMovement(Position destiny)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override string ToString()
         {
             return "C";

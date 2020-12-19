@@ -1,6 +1,8 @@
 ﻿using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Entities.Exceptions;
 using Xadrez.Domain.Entities.Pieces;
+using Xadrez.Domain.Utils;
 
 namespace Xadrez.Domain
 {
@@ -44,15 +46,23 @@ namespace Xadrez.Domain
 
         public void MovePiece(ChessPosition origin, ChessPosition destiny)
         {
-            Piece piece = RemovePiece(origin);
-
-            if (piece != null)
+            if (ValidPositionsForMovement(origin, destiny))
             {
-                Piece capturedPiece = RemovePiece(destiny);
+                Piece piece = GetPiece(origin);
 
-                AddPiece(piece, destiny);
-                
-                piece.IncreaseMovement();
+                if (piece == null)
+                    throw new ChessGameException(SystemMessages.NoPiece);
+
+                if (piece.ValidMovement(GetPosition(destiny)))
+                {
+                    RemovePiece(origin);
+
+                    Piece capturedPiece = RemovePiece(destiny);
+
+                    AddPiece(piece, destiny);
+
+                    piece.IncreaseMovement();
+                }
             }
         }
 
@@ -60,7 +70,16 @@ namespace Xadrez.Domain
 
         private Position GetPosition(ChessPosition position)
         {
-            return new Position(position.Line, (byte)(position.Column - 'a' + 1));
+            Position newPosition = new Position(position.Line, (byte)(position.Column - 'a' + 1));
+
+            Board.ValidatePosition(newPosition);
+
+            return newPosition;
+        }
+
+        private bool ValidPositionsForMovement(ChessPosition origin, ChessPosition destiny)
+        {
+            return GetPosition(origin) != null && GetPosition(destiny) != null;
         }
 
         private void PutWhitePieces()

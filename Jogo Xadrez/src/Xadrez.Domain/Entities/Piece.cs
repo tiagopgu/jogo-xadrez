@@ -22,5 +22,7 @@ namespace Xadrez.Domain.Entities
         {
             AmountMoviments++;
         }
+
+        public abstract bool ValidMovement(Position destiny);
     }
 }

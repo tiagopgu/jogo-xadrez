@@ -8,6 +8,8 @@
 
         public static string TryAgain => "Press any key to perform the move again";
 
+        public static string NoPiece => "No pieces in that position";
+
         public static string InvalidMovement => "Invalid movement for this piece";
     }
 }
