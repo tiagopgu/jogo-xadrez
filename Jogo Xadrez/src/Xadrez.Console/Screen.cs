@@ -60,24 +60,43 @@ namespace Xadrez.Console
         {
             if (position != null && position.Line > 0 && position.Line <= ScreenConfig.TotalChessGameLines && ScreenConfig.ColumnIdentification.IndexOf(position.Column) != -1)
             {
-                int currentLeftPosition = System.Console.CursorLeft;
-                int currentTopPosition = System.Console.CursorTop;
+                SetCursorPosition(position);
 
-                byte leftPosition = (byte)(ScreenConfig.LeftStartingPositionChessGame + (ScreenConfig.ColumnIdentification.IndexOf(position.Column) * ScreenConfig.ChessHouseWidth));
-                byte topPosition = (byte)(ScreenConfig.TotalChessGameLines - position.Line + ScreenConfig.TopStartingPositionChessGame);
-
-                SetBackgroundCheese((byte)(position.Line + 1), (byte)ScreenConfig.ColumnIdentification.IndexOf(position.Column));
                 System.Console.ForegroundColor = ScreenConfig.ForegroundColorSelect;
-                System.Console.SetCursorPosition(leftPosition, topPosition);
 
                 System.Console.Write('[');
 
-                System.Console.SetCursorPosition(leftPosition + 2, topPosition);
+                System.Console.SetCursorPosition(System.Console.CursorLeft + 1, System.Console.CursorTop);
 
                 System.Console.Write("]");
 
                 System.Console.ResetColor();
-                System.Console.SetCursorPosition(currentLeftPosition, currentTopPosition);
+
+                ResetCursorPosition();
+            }
+        }
+
+        public static void MarkPosition(bool[,] positionsMarked)
+        {
+            for (byte i = 0; i < positionsMarked.GetLength(0); i++)
+            {
+                for (byte j = 0; j < positionsMarked.GetLength(1); j++)
+                {
+                    if (positionsMarked[i, j])
+                    {
+                        ChessPosition position = new ChessPosition((byte)(i + 1), ScreenConfig.ColumnIdentification[j]);
+                        
+                        SetCursorPosition(position);
+
+                        System.Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                        System.Console.Write(" * ");
+
+                        System.Console.ResetColor();
+
+                        ResetCursorPosition();
+                    }
+                }
             }
         }
 
@@ -118,6 +137,25 @@ namespace Xadrez.Console
             }
         }
 
+        private static void SetCursorPosition(ChessPosition position)
+        {
+            ScreenConfig.CurrentLeftPositionCursor = System.Console.CursorLeft;
+            ScreenConfig.CurrentTopPositionCursor = System.Console.CursorTop;
+
+            byte leftPosition = (byte)(ScreenConfig.LeftStartingPositionChessGame + (ScreenConfig.ColumnIdentification.IndexOf(position.Column) * ScreenConfig.ChessHouseWidth));
+            byte topPosition = (byte)(ScreenConfig.TotalChessGameLines - position.Line + ScreenConfig.TopStartingPositionChessGame);
+
+            SetBackgroundCheese((byte)(position.Line + 1), (byte)ScreenConfig.ColumnIdentification.IndexOf(position.Column));
+            System.Console.SetCursorPosition(leftPosition, topPosition);
+        }
+
+        private static void ResetCursorPosition()
+        {
+            System.Console.SetCursorPosition(ScreenConfig.CurrentLeftPositionCursor.GetValueOrDefault(), ScreenConfig.CurrentTopPositionCursor.GetValueOrDefault());
+            ScreenConfig.CurrentLeftPositionCursor = null;
+            ScreenConfig.CurrentTopPositionCursor = null;
+        }
+
         #endregion
 
         private static class ScreenConfig
@@ -134,9 +172,15 @@ namespace Xadrez.Console
 
             public static ConsoleColor ForegroundColorSelect => ConsoleColor.Yellow;
 
+            public static ConsoleColor ForegroundColorMark => ConsoleColor.DarkRed;
+
             public static byte LeftStartingPositionChessGame => 10;
 
             public static byte TopStartingPositionChessGame => 2;
+
+            public static int? CurrentTopPositionCursor { get; set; }
+
+            public static int? CurrentLeftPositionCursor { get; set; }
         }
     }
 }

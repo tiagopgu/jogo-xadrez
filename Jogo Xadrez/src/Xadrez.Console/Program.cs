@@ -2,6 +2,7 @@
 using Xadrez.Domain;
 using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Exceptions;
+using Xadrez.Domain.Entities.Pieces;
 using Xadrez.Domain.Utils;
 
 namespace Xadrez.Console
@@ -22,8 +23,12 @@ namespace Xadrez.Console
                     {
                         System.Console.Write("\tEnter the position of the piece to be moved (ex.: c5): ");
                         ChessPosition startPosition = Screen.ReadChessPosition();
+                        Piece piece = game.GetPiece(startPosition);
 
                         Screen.SelectPosition(startPosition);
+
+                        if (piece is King)
+                            Screen.MarkPosition(piece.PossibleMovements());
 
                         System.Console.Write("\tEnter the final position of the piece (ex.: d8): ");
                         ChessPosition finalPosition = Screen.ReadChessPosition();
