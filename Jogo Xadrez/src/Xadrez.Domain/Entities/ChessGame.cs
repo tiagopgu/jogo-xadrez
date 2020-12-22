@@ -70,7 +70,7 @@ namespace Xadrez.Domain
 
         private Position GetPosition(ChessPosition position)
         {
-            Position newPosition = new Position(position.Line, (byte)(position.Column - 'a' + 1));
+            Position newPosition = new Position(position?.Line ?? 0, (byte)((position?.Column ?? 'a') - 'a' + 1));
 
             Board.ValidatePosition(newPosition);
 

@@ -23,6 +23,8 @@ namespace Xadrez.Console
                         System.Console.Write("\tEnter the position of the piece to be moved (ex.: c5): ");
                         ChessPosition startPosition = Screen.ReadChessPosition();
 
+                        Screen.SelectPosition(startPosition);
+
                         System.Console.Write("\tEnter the final position of the piece (ex.: d8): ");
                         ChessPosition finalPosition = Screen.ReadChessPosition();
 
