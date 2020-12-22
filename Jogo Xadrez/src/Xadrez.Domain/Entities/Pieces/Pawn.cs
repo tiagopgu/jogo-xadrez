@@ -66,11 +66,6 @@ namespace Xadrez.Domain.Entities.Pieces
             return true;
         }
 
-        public override bool[,] PossibleMovements()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override string ToString()
         {
             return "P";

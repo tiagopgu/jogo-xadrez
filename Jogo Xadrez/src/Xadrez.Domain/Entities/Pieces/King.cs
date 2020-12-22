@@ -29,34 +29,6 @@ namespace Xadrez.Domain.Entities.Pieces
             return true;
         }
 
-        public override bool[,] PossibleMovements()
-        {
-            bool[,] matrixMovements = new bool[Board.AmountLines, Board.AmountColumns];
-            Position position = new Position(0, 0);
-
-            for (byte i = 0; i < Board.AmountLines; i++)
-            {
-                for (byte j = 0; j < Board.AmountColumns; j++)
-                {
-                    try
-                    {
-                        position.Line = (byte)(i + 1);
-                        position.Column = (byte)(j + 1);
-
-                        ValidMovement(position);
-
-                        matrixMovements[i, j] = true;
-                    }
-                    catch (ChessGameException)
-                    {
-                        matrixMovements[i, j] = false;
-                    }
-                }
-            }
-
-            return matrixMovements;
-        }
-
         public override string ToString()
         {
             return "R";

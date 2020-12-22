@@ -27,8 +27,7 @@ namespace Xadrez.Console
 
                         Screen.SelectPosition(startPosition);
 
-                        if (piece is King)
-                            Screen.MarkPosition(piece.PossibleMovements());
+                        Screen.MarkPosition(piece?.PossibleMovements());
 
                         System.Console.Write("\tEnter the final position of the piece (ex.: d8): ");
                         ChessPosition finalPosition = Screen.ReadChessPosition();

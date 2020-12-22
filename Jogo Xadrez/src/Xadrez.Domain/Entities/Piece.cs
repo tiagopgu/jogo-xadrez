@@ -1,4 +1,5 @@
 ﻿using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Entities.Exceptions;
 
 namespace Xadrez.Domain.Entities
 {
@@ -25,6 +26,32 @@ namespace Xadrez.Domain.Entities
 
         public abstract bool ValidMovement(Position destiny);
 
-        public abstract bool[,] PossibleMovements();
+        public virtual bool[,] PossibleMovements()
+        {
+            bool[,] matrixMovements = new bool[Board.AmountLines, Board.AmountColumns];
+            Position position = new Position(0, 0);
+
+            for (byte i = 0; i < Board.AmountLines; i++)
+            {
+                for (byte j = 0; j < Board.AmountColumns; j++)
+                {
+                    try
+                    {
+                        position.Line = (byte)(i + 1);
+                        position.Column = (byte)(j + 1);
+
+                        ValidMovement(position);
+
+                        matrixMovements[i, j] = true;
+                    }
+                    catch (ChessGameException)
+                    {
+                        matrixMovements[i, j] = false;
+                    }
+                }
+            }
+
+            return matrixMovements;
+        }
     }
 }

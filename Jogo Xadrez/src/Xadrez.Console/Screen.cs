@@ -78,23 +78,26 @@ namespace Xadrez.Console
 
         public static void MarkPosition(bool[,] positionsMarked)
         {
-            for (byte i = 0; i < positionsMarked.GetLength(0); i++)
+            if (positionsMarked != null)
             {
-                for (byte j = 0; j < positionsMarked.GetLength(1); j++)
+                for (byte i = 0; i < positionsMarked.GetLength(0); i++)
                 {
-                    if (positionsMarked[i, j])
+                    for (byte j = 0; j < positionsMarked.GetLength(1); j++)
                     {
-                        ChessPosition position = new ChessPosition((byte)(i + 1), ScreenConfig.ColumnIdentification[j]);
-                        
-                        SetCursorPosition(position);
+                        if (positionsMarked[i, j])
+                        {
+                            ChessPosition position = new ChessPosition((byte)(i + 1), ScreenConfig.ColumnIdentification[j]);
 
-                        System.Console.ForegroundColor = ConsoleColor.DarkRed;
+                            SetCursorPosition(position);
 
-                        System.Console.Write(" * ");
+                            System.Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                        System.Console.ResetColor();
+                            System.Console.Write(" * ");
 
-                        ResetCursorPosition();
+                            System.Console.ResetColor();
+
+                            ResetCursorPosition();
+                        }
                     }
                 }
             }
