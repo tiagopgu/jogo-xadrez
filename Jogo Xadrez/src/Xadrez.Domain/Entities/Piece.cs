@@ -1,5 +1,4 @@
 ﻿using Xadrez.Domain.Entities.Enums;
-using Xadrez.Domain.Entities.Exceptions;
 
 namespace Xadrez.Domain.Entities
 {
@@ -31,11 +30,11 @@ namespace Xadrez.Domain.Entities
             bool[,] matrixMovements = new bool[Board.AmountLines, Board.AmountColumns];
             Position position = new Position(0, 0);
 
-            for (byte i = 0; i < Board.AmountLines; i++)
+            for (int i = Board.AmountLines - 1; i > 0; i--)
             {
-                for (byte j = 0; j < Board.AmountColumns; j++)
+                for (int j = 0; j < Board.AmountColumns; j++)
                 {
-                    position.Line = (byte)(i + 1);
+                    position.Line = (byte)(Board.AmountLines - i);
                     position.Column = (byte)(j + 1);
 
                     if (ValidMovement(position))

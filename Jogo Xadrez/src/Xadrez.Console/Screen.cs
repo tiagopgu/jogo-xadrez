@@ -80,13 +80,13 @@ namespace Xadrez.Console
         {
             if (positionsMarked != null)
             {
-                for (byte i = 0; i < positionsMarked.GetLength(0); i++)
+                for (int i = positionsMarked.GetLength(0) - 1; i > 0; i--)
                 {
-                    for (byte j = 0; j < positionsMarked.GetLength(1); j++)
+                    for (int j = 0; j < positionsMarked.GetLength(1); j++)
                     {
                         if (positionsMarked[i, j])
                         {
-                            ChessPosition position = new ChessPosition((byte)(i + 1), ScreenConfig.ColumnIdentification[j]);
+                            ChessPosition position = new ChessPosition((byte)(positionsMarked.GetLength(0) - i), ScreenConfig.ColumnIdentification[j]);
 
                             SetCursorPosition(position);
 

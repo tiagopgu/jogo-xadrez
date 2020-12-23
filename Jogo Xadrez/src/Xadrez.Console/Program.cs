@@ -2,7 +2,6 @@
 using Xadrez.Domain;
 using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Exceptions;
-using Xadrez.Domain.Entities.Pieces;
 using Xadrez.Domain.Utils;
 
 namespace Xadrez.Console
