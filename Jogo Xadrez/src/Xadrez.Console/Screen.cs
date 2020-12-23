@@ -80,7 +80,7 @@ namespace Xadrez.Console
         {
             if (positionsMarked != null)
             {
-                for (int i = positionsMarked.GetLength(0) - 1; i > 0; i--)
+                for (int i = positionsMarked.GetLength(0) - 1; i >= 0; i--)
                 {
                     for (int j = 0; j < positionsMarked.GetLength(1); j++)
                     {

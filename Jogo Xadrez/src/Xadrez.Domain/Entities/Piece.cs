@@ -30,7 +30,7 @@ namespace Xadrez.Domain.Entities
             bool[,] matrixMovements = new bool[Board.AmountLines, Board.AmountColumns];
             Position position = new Position(0, 0);
 
-            for (int i = Board.AmountLines - 1; i > 0; i--)
+            for (int i = Board.AmountLines - 1; i >= 0; i--)
             {
                 for (int j = 0; j < Board.AmountColumns; j++)
                 {
