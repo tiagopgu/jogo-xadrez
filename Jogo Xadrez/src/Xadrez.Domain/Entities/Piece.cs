@@ -35,19 +35,11 @@ namespace Xadrez.Domain.Entities
             {
                 for (byte j = 0; j < Board.AmountColumns; j++)
                 {
-                    try
-                    {
-                        position.Line = (byte)(i + 1);
-                        position.Column = (byte)(j + 1);
+                    position.Line = (byte)(i + 1);
+                    position.Column = (byte)(j + 1);
 
-                        ValidMovement(position);
-
+                    if (ValidMovement(position))
                         matrixMovements[i, j] = true;
-                    }
-                    catch (ChessGameException)
-                    {
-                        matrixMovements[i, j] = false;
-                    }
                 }
             }
 

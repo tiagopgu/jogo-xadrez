@@ -53,16 +53,16 @@ namespace Xadrez.Domain
                 if (piece == null)
                     throw new ChessGameException(SystemMessages.NoPiece);
 
-                if (piece.ValidMovement(GetPosition(destiny)))
-                {
-                    RemovePiece(origin);
+                if (piece.ValidMovement(GetPosition(destiny)) == false)
+                    throw new ChessGameException(SystemMessages.InvalidMovement);
 
-                    Piece capturedPiece = RemovePiece(destiny);
+                RemovePiece(origin);
 
-                    AddPiece(piece, destiny);
+                Piece capturedPiece = RemovePiece(destiny);
 
-                    piece.IncreaseMovement();
-                }
+                AddPiece(piece, destiny);
+
+                piece.IncreaseMovement();
             }
         }
 

@@ -1,6 +1,4 @@
 ﻿using Xadrez.Domain.Entities.Enums;
-using Xadrez.Domain.Entities.Exceptions;
-using Xadrez.Domain.Utils;
 
 namespace Xadrez.Domain.Entities.Pieces
 {
@@ -16,15 +14,15 @@ namespace Xadrez.Domain.Entities.Pieces
         {
             // You can only move one house at a time
             if (destiny.Line > Position.Line + 1 || destiny.Column > Position.Column + 1 || destiny.Line < Position.Line - 1 || destiny.Column < Position.Column - 1)
-                throw new ChessGameException(SystemMessages.InvalidMovement);
+                return false;
 
             // Cannot have piece at destination
             if (Board.ExistsPiece(destiny))
-                throw new ChessGameException(SystemMessages.InvalidMovement);
+                return false;
 
             // Put yourself in check
             if (ValidateCheckMovement(destiny))
-                throw new ChessGameException(SystemMessages.InvalidMovement);
+                return false;
 
             return true;
         }

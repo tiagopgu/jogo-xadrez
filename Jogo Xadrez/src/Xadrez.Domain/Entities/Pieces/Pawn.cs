@@ -1,6 +1,4 @@
 ﻿using Xadrez.Domain.Entities.Enums;
-using Xadrez.Domain.Entities.Exceptions;
-using Xadrez.Domain.Utils;
 
 namespace Xadrez.Domain.Entities.Pieces
 {
@@ -18,50 +16,50 @@ namespace Xadrez.Domain.Entities.Pieces
             {
                 // Can't go back
                 if (destiny.Line <= Position.Line)
-                    throw new ChessGameException(SystemMessages.InvalidMovement);
+                    return false;
 
                 // You can only advance a maximum of two spaces
                 if (destiny.Line > Position.Line + 2)
-                    throw new ChessGameException(SystemMessages.InvalidMovement);
+                    return false;
 
                 // You can only advance more than one space in the first move
                 if (AmountMoviments > 0 && destiny.Line >= Position.Line + 2)
-                    throw new ChessGameException(SystemMessages.InvalidMovement);
+                    return false;
 
                 // In the capture movement, only one space can be advanced
                 if ((destiny.Line != Position.Line && destiny.Column != Position.Column) && (destiny.Line > Position.Line + 1 || destiny.Column > Position.Column + 1 || destiny.Column < Position.Column - 1))
-                    throw new ChessGameException(SystemMessages.InvalidMovement);
+                    return false;
             }
             else
             {
                 // Can't go back
                 if (destiny.Line >= Position.Line)
-                    throw new ChessGameException(SystemMessages.InvalidMovement);
+                    return false;
 
                 // You can only advance a maximum of two spaces
                 if (destiny.Line < Position.Line - 2)
-                    throw new ChessGameException(SystemMessages.InvalidMovement);
+                    return false;
 
                 // You can only advance more than one space in the first move
                 if (AmountMoviments > 0 && destiny.Line <= Position.Line - 2)
-                    throw new ChessGameException(SystemMessages.InvalidMovement);
+                    return false;
 
                 // In the capture movement, only one space can be advanced
                 if ((destiny.Line != Position.Line && destiny.Column != Position.Column) && (destiny.Line < Position.Line - 1 || destiny.Column > Position.Column + 1 || destiny.Column < Position.Column - 1))
-                    throw new ChessGameException(SystemMessages.InvalidMovement);
+                    return false;
             }
 
             // Cannot move horizontally
             if (destiny.Line == Position.Line && destiny.Column != Position.Column)
-                throw new ChessGameException(SystemMessages.InvalidMovement);
+                return false;
 
             // Capture movement is only valid if piece exists at destination
             if ((destiny.Line != Position.Line && destiny.Column != Position.Column) && (Board.ExistsPiece(destiny) == false))
-                throw new ChessGameException(SystemMessages.InvalidMovement);
+                return false;
 
             // Path to destination is not clear
             if (FreeWay(destiny) == false)
-                throw new ChessGameException(SystemMessages.InvalidMovement);
+                return false;
 
             return true;
         }
