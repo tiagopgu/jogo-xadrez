@@ -1,4 +1,6 @@
-﻿using Xadrez.Domain.Entities.Enums;
+﻿using System;
+using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Utils;
 
 namespace Xadrez.Domain.Entities.Pieces
 {
@@ -12,17 +14,37 @@ namespace Xadrez.Domain.Entities.Pieces
 
         public override bool ValidMovement(Position destiny)
         {
-            throw new System.NotImplementedException();
-        }
+            // It cannot be move to the same position
+            if (destiny.Line == Position.Line && destiny.Column == Position.Column)
+                return false;
 
-        public override bool[,] PossibleMovements()
-        {
-            throw new System.NotImplementedException();
+            // can only walk in an "L" shape
+            return AllowedPosition(destiny);
         }
 
         public override string ToString()
         {
             return "C";
         }
+
+        #region Privates Methods
+
+        private bool AllowedPosition(Position destiny)
+        {
+            var stopAtTheNextIteration = false;
+
+            int totalLinesWalked = Math.Abs(destiny.Line - Position.Line);
+            int totalColumnsWalked = Math.Abs(destiny.Column - Position.Column);
+
+            if (totalLinesWalked == 2 && totalColumnsWalked == 1 && ChessHelper.PermittedPosition(Board, destiny, Color, ref stopAtTheNextIteration))
+                return true;
+
+            if (totalColumnsWalked == 2 && totalLinesWalked == 1 && ChessHelper.PermittedPosition(Board, destiny, Color, ref stopAtTheNextIteration))
+                return true;
+
+            return false;
+        }
+
+        #endregion
     }
 }
