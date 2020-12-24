@@ -1,4 +1,7 @@
-﻿using Xadrez.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Enums;
 using Xadrez.Domain.Entities.Exceptions;
 using Xadrez.Domain.Entities.Pieces;
@@ -8,6 +11,8 @@ namespace Xadrez.Domain
 {
     public class ChessGame
     {
+        private List<Piece> _capturedPieces;
+
         public Board Board { get; private set; }
         public byte Shift { get; private set; }
         public Color CurrentPlayer { get; private set; }
@@ -15,6 +20,7 @@ namespace Xadrez.Domain
 
         public ChessGame()
         {
+            _capturedPieces = new List<Piece>();
             Board = new Board(8, 8);
             Shift = 1;
             CurrentPlayer = Color.White;
@@ -51,6 +57,11 @@ namespace Xadrez.Domain
             return piece;
         }
 
+        public Piece[] GetCapturedPieces(Color color)
+        {
+            return _capturedPieces.Where(p => p.Color == color).ToArray();
+        }
+
         public void MovePiece(ChessPosition origin, ChessPosition destiny)
         {
             if (ValidPositionsForMovement(origin, destiny))
@@ -62,13 +73,13 @@ namespace Xadrez.Domain
 
                 RemovePiece(origin);
 
-                Piece capturedPiece = RemovePiece(destiny);
+                CapturePiece(destiny);
 
                 AddPiece(piece, destiny);
 
                 piece.IncreaseMovement();
-                ChangePlayer();
-                Shift++;
+
+                UpdateGame();
             }
         }
 
@@ -160,6 +171,20 @@ namespace Xadrez.Domain
         private bool ValidPieceCurrentPlayer(Piece piece)
         {
             return piece != null && piece.Color == CurrentPlayer;
+        }
+
+        private void CapturePiece(ChessPosition position)
+        {
+            Piece capturedPiece = RemovePiece(position);
+
+            if (capturedPiece != null)
+                _capturedPieces.Add(capturedPiece);
+        }
+
+        private void UpdateGame()
+        {
+            ChangePlayer();
+            Shift++;
         }
 
         #endregion

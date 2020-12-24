@@ -48,6 +48,28 @@ namespace Xadrez.Console
         {
             System.Console.WriteLine($"\t[Shift: {chessGame.Shift}]");
             System.Console.WriteLine($"\t[Current Player: {chessGame?.CurrentPlayer}]\n");
+
+            string capturedPieces = "";
+            string separator = "";
+
+            foreach (var piece in chessGame.GetCapturedPieces(Color.White))
+            {
+                capturedPieces += separator + piece;
+                separator = ", ";
+            }
+
+            System.Console.WriteLine($"\tCaptured white pieces: [{capturedPieces}]");
+
+            separator = "";
+            capturedPieces = "";
+
+            foreach (var piece in chessGame.GetCapturedPieces(Color.Black))
+            {
+                capturedPieces += separator + piece;
+                separator = ", ";
+            }
+
+            System.Console.WriteLine($"\tCaptured black pieces: [{capturedPieces}]\n");
         }
 
         public static ChessPosition ReadChessPosition()
