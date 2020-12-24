@@ -1,5 +1,6 @@
 ﻿using System;
 using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Utils;
 
 namespace Xadrez.Domain.Entities.Pieces
 {
@@ -50,7 +51,7 @@ namespace Xadrez.Domain.Entities.Pieces
                     currentPosition.Line = (destiny.Line == Position.Line) ? Position.Line : (byte)i;
                     currentPosition.Column = (destiny.Column == Position.Column) ? Position.Column : (byte)i;
 
-                    if (PermittedPosition(currentPosition, ref stopAtTheCurrentPosition) == false)
+                    if (ChessHelper.PermittedPosition(Board, currentPosition, Color, ref stopAtTheCurrentPosition) == false)
                         return false;
                 }
             }
@@ -69,7 +70,7 @@ namespace Xadrez.Domain.Entities.Pieces
                             currentPosition.Line = (byte)i;
                             currentPosition.Column = (byte)j;
 
-                            if (PermittedPosition(currentPosition, ref stopAtTheCurrentPosition) == false)
+                            if (ChessHelper.PermittedPosition(Board, currentPosition, Color, ref stopAtTheCurrentPosition) == false)
                                 return false;
                         }
                     }
@@ -167,24 +168,6 @@ namespace Xadrez.Domain.Entities.Pieces
                 return --currentIteration;
 
             return ++currentIteration;
-        }
-
-        private bool PermittedPosition(Position position, ref bool stopAtTheCurrentPosition)
-        {
-            if (stopAtTheCurrentPosition)
-                return false;
-
-            Piece piece = Board.GetPiece(position);
-
-            if (piece != null)
-            {
-                if (piece.Color == Color)
-                    return false;
-
-                stopAtTheCurrentPosition = true;
-            }
-
-            return true;
         }
 
         #endregion
