@@ -21,7 +21,7 @@ namespace Xadrez.Domain.Entities.Pieces
                 return false;
 
             // Put yourself in check
-            if (ValidateCheckMovement(destiny))
+            if (CheckMovement(destiny))
                 return false;
 
             return true;
@@ -34,9 +34,29 @@ namespace Xadrez.Domain.Entities.Pieces
 
         #region Privates Methods
 
-        private bool ValidateCheckMovement(Position destiny)
+        private bool CheckMovement(Position destiny)
         {
-            // TODO: Implement validate Check movement
+            Position currentPosition = new Position(0, 0);
+
+            for (int i = 1; i <= Board.AmountLines; i++)
+            {
+                for (int j = 1; j <= Board.AmountColumns; j++)
+                {
+                    currentPosition.Line = (byte)i;
+                    currentPosition.Column = (byte)j;
+                    Piece piece = Board.GetPiece(currentPosition);
+
+                    if (piece != null && piece.Color != Color)
+                    {
+                        if (piece is Pawn == false && piece.ValidMovement(destiny))
+                            return true;
+                        
+                        if (piece is Pawn && (piece as Pawn).ValidateCaptureMovement(destiny, this))
+                            return true;
+                    }
+                }
+            }
+
             return false;
         }
 

@@ -1,4 +1,5 @@
-﻿using Xadrez.Domain.Entities.Enums;
+﻿using System;
+using Xadrez.Domain.Entities.Enums;
 
 namespace Xadrez.Domain.Entities.Pieces
 {
@@ -62,6 +63,23 @@ namespace Xadrez.Domain.Entities.Pieces
                 return false;
 
             return true;
+        }
+
+        public bool ValidateCaptureMovement(Position destiny, Piece pieceDestiny)
+        {
+            if (pieceDestiny != null && pieceDestiny.Color != Color)
+            {
+                int totalLineWalked = destiny.Line - Position.Line;
+                int totalColumnWalked = destiny.Column - Position.Column;
+
+                if (Color == Color.White && totalLineWalked == 1 && (totalColumnWalked == 1 || totalColumnWalked == -1))
+                    return true;
+
+                if (Color == Color.Black && totalLineWalked == -1 && (totalColumnWalked == 1 || totalColumnWalked == -1))
+                    return true;
+            }
+
+            return false;
         }
 
         public override string ToString()
