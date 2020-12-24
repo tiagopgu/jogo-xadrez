@@ -1,4 +1,5 @@
 ﻿using System;
+using Xadrez.Domain;
 using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Enums;
 
@@ -41,6 +42,12 @@ namespace Xadrez.Console
             }
 
             System.Console.Write($"\t   {columnIdentificationLine}\n\n");
+        }
+
+        public static void PrintInfo(ChessGame chessGame)
+        {
+            System.Console.WriteLine($"\t[Shift: {chessGame.Shift}]");
+            System.Console.WriteLine($"\t[Current Player: {chessGame?.CurrentPlayer}]\n");
         }
 
         public static ChessPosition ReadChessPosition()

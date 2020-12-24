@@ -11,5 +11,7 @@
         public static string NoPiece => "No pieces in that position";
 
         public static string InvalidMovement => "Invalid movement for this piece";
+
+        public static string InvalidPieceForCurrentPlayer => "The selected piece is invalid for the current player";
     }
 }

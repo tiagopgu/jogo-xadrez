@@ -15,6 +15,7 @@ namespace Xadrez.Console
                 ChessGame game = new ChessGame();
 
                 Screen.PrintBoard(game.Board);
+                Screen.PrintInfo(game);
 
                 while (game.GameEnded == false)
                 {
@@ -50,6 +51,7 @@ namespace Xadrez.Console
                     }
 
                     Screen.PrintBoard(game.Board);
+                    Screen.PrintInfo(game);
                 }
             }
             catch (Exception ex)

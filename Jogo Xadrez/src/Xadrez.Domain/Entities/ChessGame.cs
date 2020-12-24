@@ -40,8 +40,15 @@ namespace Xadrez.Domain
         public Piece GetPiece(ChessPosition position)
         {
             Position newPosition = GetPosition(position);
+            Piece piece = Board.GetPiece(newPosition);
 
-            return Board.GetPiece(newPosition);
+            if (piece == null)
+                throw new ChessGameException(SystemMessages.NoPiece);
+
+            if (ValidPieceCurrentPlayer(piece) == false)
+                throw new ChessGameException(SystemMessages.InvalidPieceForCurrentPlayer);
+
+            return piece;
         }
 
         public void MovePiece(ChessPosition origin, ChessPosition destiny)
@@ -49,9 +56,6 @@ namespace Xadrez.Domain
             if (ValidPositionsForMovement(origin, destiny))
             {
                 Piece piece = GetPiece(origin);
-
-                if (piece == null)
-                    throw new ChessGameException(SystemMessages.NoPiece);
 
                 if (piece.ValidMovement(GetPosition(destiny)) == false)
                     throw new ChessGameException(SystemMessages.InvalidMovement);
@@ -63,6 +67,8 @@ namespace Xadrez.Domain
                 AddPiece(piece, destiny);
 
                 piece.IncreaseMovement();
+                ChangePlayer();
+                Shift++;
             }
         }
 
@@ -144,6 +150,16 @@ namespace Xadrez.Domain
 
             // Queen
             AddPiece(new Queen(Color.Black, Board), new ChessPosition(8, 'e'));
+        }
+
+        private void ChangePlayer()
+        {
+            CurrentPlayer = (CurrentPlayer == Color.White) ? Color.Black : Color.White;
+        }
+
+        private bool ValidPieceCurrentPlayer(Piece piece)
+        {
+            return piece != null && piece.Color == CurrentPlayer;
         }
 
         #endregion
