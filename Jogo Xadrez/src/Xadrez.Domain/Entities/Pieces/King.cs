@@ -1,4 +1,5 @@
 ﻿using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Utils;
 
 namespace Xadrez.Domain.Entities.Pieces
 {
@@ -16,12 +17,16 @@ namespace Xadrez.Domain.Entities.Pieces
             if (destiny.Line > Position.Line + 1 || destiny.Column > Position.Column + 1 || destiny.Line < Position.Line - 1 || destiny.Column < Position.Column - 1)
                 return false;
 
-            // Cannot have piece at destination
-            if (Board.ExistsPiece(destiny))
+            // check that there is no piece of the same color in the destination
+            if (FreeAway(destiny) == false)
                 return false;
 
             // Put yourself in check
-            if (CheckMovement(destiny))
+            if (IsCheckMovement(destiny))
+                return false;
+
+            // Put yourself in check after capture
+            if (IsInCheckAfterCapture(destiny))
                 return false;
 
             return true;
@@ -34,7 +39,14 @@ namespace Xadrez.Domain.Entities.Pieces
 
         #region Privates Methods
 
-        private bool CheckMovement(Position destiny)
+        private bool FreeAway(Position destiny)
+        {
+            bool stopAtTheNextIteration = false;
+
+            return ChessHelper.PermittedPosition(Board, destiny, Color, ref stopAtTheNextIteration);
+        }
+
+        private bool IsCheckMovement(Position destiny)
         {
             Position currentPosition = new Position(0, 0);
 
@@ -50,7 +62,7 @@ namespace Xadrez.Domain.Entities.Pieces
                     {
                         if (piece is Pawn == false && piece.ValidMovement(destiny))
                             return true;
-                        
+
                         if (piece is Pawn && (piece as Pawn).ValidateCaptureMovement(destiny, this))
                             return true;
                     }
@@ -58,6 +70,23 @@ namespace Xadrez.Domain.Entities.Pieces
             }
 
             return false;
+        }
+
+        private bool IsInCheckAfterCapture(Position destiny)
+        {
+            Piece piece = Board.GetPiece(destiny);
+            bool isCheckMovement = false;
+
+            if (piece != null && piece.Color != Color)
+            {
+                Board.RemovePiece(destiny);
+
+                isCheckMovement = IsCheckMovement(destiny);
+
+                Board.AddPiece(piece, destiny);
+            }
+
+            return isCheckMovement;
         }
 
         #endregion
