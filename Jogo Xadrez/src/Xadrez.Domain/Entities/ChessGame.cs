@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Xadrez.Domain.Entities;
 using Xadrez.Domain.Entities.Enums;
@@ -11,6 +10,7 @@ namespace Xadrez.Domain
 {
     public class ChessGame
     {
+        private List<Piece> _piecesInPlay;
         private List<Piece> _capturedPieces;
 
         public Board Board { get; private set; }
@@ -20,7 +20,9 @@ namespace Xadrez.Domain
 
         public ChessGame()
         {
+            _piecesInPlay = new List<Piece>();
             _capturedPieces = new List<Piece>();
+
             Board = new Board(8, 8);
             Shift = 1;
             CurrentPlayer = Color.White;
@@ -33,6 +35,7 @@ namespace Xadrez.Domain
         {
             Position newPosition = GetPosition(position);
 
+            _piecesInPlay.Add(piece);
             Board.AddPiece(piece, newPosition);
         }
 
@@ -40,7 +43,11 @@ namespace Xadrez.Domain
         {
             Position newPosition = GetPosition(position);
 
-            return Board.RemovePiece(newPosition);
+            Piece piece = Board.RemovePiece(newPosition);
+
+            _piecesInPlay.Remove(piece);
+
+            return piece;
         }
 
         public Piece GetPiece(ChessPosition position)
@@ -64,6 +71,9 @@ namespace Xadrez.Domain
 
         public bool CanMove(Piece piece)
         {
+            if (piece is King == false && KingIsInCheck(CurrentPlayer))
+                throw new ChessGameException(SystemMessages.KingIsInCheck);
+
             foreach (var isPossibleMovements in piece.PossibleMovements())
             {
                 if (isPossibleMovements)
@@ -92,6 +102,13 @@ namespace Xadrez.Domain
 
                 UpdateGame();
             }
+        }
+
+        public bool KingIsInCheck(Color color)
+        {
+            King king = _piecesInPlay.Where(p => p.Color == color && p is King).FirstOrDefault() as King;
+
+            return king != null && king.IsCheckMovement(king.Position);
         }
 
         #region Privates Methods

@@ -72,6 +72,14 @@ namespace Xadrez.Console
             System.Console.WriteLine($"\tCaptured black pieces: [{capturedPieces}]\n");
         }
 
+        public static void PrintAlert(string message)
+        {
+            System.Console.BackgroundColor = ConsoleColor.Red;
+            System.Console.WriteLine($"\n\t{message}\n");
+            
+            System.Console.ResetColor();
+        }
+
         public static ChessPosition ReadChessPosition()
         {
             string input = System.Console.ReadLine();

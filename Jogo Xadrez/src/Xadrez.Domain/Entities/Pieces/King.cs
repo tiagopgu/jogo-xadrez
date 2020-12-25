@@ -32,21 +32,7 @@ namespace Xadrez.Domain.Entities.Pieces
             return true;
         }
 
-        public override string ToString()
-        {
-            return "R";
-        }
-
-        #region Privates Methods
-
-        private bool FreeAway(Position destiny)
-        {
-            bool stopAtTheNextIteration = false;
-
-            return ChessHelper.PermittedPosition(Board, destiny, Color, ref stopAtTheNextIteration);
-        }
-
-        private bool IsCheckMovement(Position destiny)
+        public bool IsCheckMovement(Position destiny)
         {
             Position currentPosition = new Position(0, 0);
 
@@ -70,6 +56,20 @@ namespace Xadrez.Domain.Entities.Pieces
             }
 
             return false;
+        }
+
+        public override string ToString()
+        {
+            return "R";
+        }
+
+        #region Privates Methods
+
+        private bool FreeAway(Position destiny)
+        {
+            bool stopAtTheNextIteration = false;
+
+            return ChessHelper.PermittedPosition(Board, destiny, Color, ref stopAtTheNextIteration);
         }
 
         private bool IsInCheckAfterCapture(Position destiny)

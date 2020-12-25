@@ -21,6 +21,11 @@ namespace Xadrez.Console
 
                     try
                     {
+                        if (game.Shift > 1 && game.KingIsInCheck(game.CurrentPlayer))
+                        {
+                            Screen.PrintAlert($"The {game.CurrentPlayer.ToString().ToLower()} king is in check.");
+                        }
+
                         System.Console.Write("\tEnter the position of the piece to be moved (ex.: c5): ");
                         ChessPosition startPosition = Screen.ReadChessPosition();
 
