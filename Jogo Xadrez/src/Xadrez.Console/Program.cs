@@ -14,47 +14,49 @@ namespace Xadrez.Console
             {
                 ChessGame game = new ChessGame();
 
-                Screen.PrintBoard(game.Board);
-                Screen.PrintInfo(game);
-
                 while (game.GameEnded == false)
                 {
+                    Screen.PrintBoard(game.Board);
+                    Screen.PrintInfo(game);
+
                     try
                     {
                         System.Console.Write("\tEnter the position of the piece to be moved (ex.: c5): ");
                         ChessPosition startPosition = Screen.ReadChessPosition();
-                        Piece piece = game.GetPiece(startPosition);
 
-                        if (game.CanMove(piece))
+                        if (startPosition != null)
                         {
-                            Screen.SelectPosition(startPosition);
+                            Piece piece = game.GetPiece(startPosition);
 
-                            Screen.MarkPosition(piece?.PossibleMovements());
+                            if (game.CanMove(piece))
+                            {
+                                Screen.SelectPosition(startPosition);
 
-                            System.Console.Write("\tEnter the final position of the piece (ex.: d8): ");
-                            ChessPosition finalPosition = Screen.ReadChessPosition();
+                                Screen.MarkPosition(piece?.PossibleMovements());
 
-                            game.MovePiece(startPosition, finalPosition);
+                                System.Console.Write("\tEnter the final position of the piece (ex.: d8). Press enter without a position to cancel the selection: ");
+                                ChessPosition finalPosition = Screen.ReadChessPosition();
+
+                                if (finalPosition != null)
+                                    game.MovePiece(startPosition, finalPosition);
+                            }
                         }
                     }
                     catch (FormatException)
                     {
-                        System.Console.WriteLine($"\n\tTypo: {SystemMessages.Typo}. {SystemMessages.TryAgain}.");
-                        System.Console.ReadKey();
+                        System.Console.Write($"\n\tTypo: {SystemMessages.Typo}. {SystemMessages.TryAgain}.");
+                        System.Console.ReadKey(true);
                     }
                     catch (ChessGameException ex)
                     {
-                        System.Console.WriteLine($"\n\tInvalid play: {ex.Message}. {SystemMessages.TryAgain}.");
-                        System.Console.ReadKey();
+                        System.Console.Write($"\n\tInvalid play: {ex.Message}. {SystemMessages.TryAgain}.");
+                        System.Console.ReadKey(true);
                     }
                     catch (BoardException ex)
                     {
-                        System.Console.WriteLine($"\n\tInvalid position: {ex.Message}. {SystemMessages.TryAgain}.");
-                        System.Console.ReadKey();
+                        System.Console.Write($"\n\tInvalid position: {ex.Message}. {SystemMessages.TryAgain}.");
+                        System.Console.ReadKey(true);
                     }
-
-                    Screen.PrintBoard(game.Board);
-                    Screen.PrintInfo(game);
                 }
             }
             catch (Exception ex)
