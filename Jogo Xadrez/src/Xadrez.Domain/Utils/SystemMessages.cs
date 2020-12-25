@@ -13,5 +13,7 @@
         public static string InvalidMovement => "Invalid movement for this piece";
 
         public static string InvalidPieceForCurrentPlayer => "The selected piece is invalid for the current player";
+
+        public static string CanNotMove => "The selected piece has no possible movements";
     }
 }

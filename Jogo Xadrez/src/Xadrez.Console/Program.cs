@@ -25,14 +25,17 @@ namespace Xadrez.Console
                         ChessPosition startPosition = Screen.ReadChessPosition();
                         Piece piece = game.GetPiece(startPosition);
 
-                        Screen.SelectPosition(startPosition);
+                        if (game.CanMove(piece))
+                        {
+                            Screen.SelectPosition(startPosition);
 
-                        Screen.MarkPosition(piece?.PossibleMovements());
+                            Screen.MarkPosition(piece?.PossibleMovements());
 
-                        System.Console.Write("\tEnter the final position of the piece (ex.: d8): ");
-                        ChessPosition finalPosition = Screen.ReadChessPosition();
+                            System.Console.Write("\tEnter the final position of the piece (ex.: d8): ");
+                            ChessPosition finalPosition = Screen.ReadChessPosition();
 
-                        game.MovePiece(startPosition, finalPosition);
+                            game.MovePiece(startPosition, finalPosition);
+                        }
                     }
                     catch (FormatException)
                     {

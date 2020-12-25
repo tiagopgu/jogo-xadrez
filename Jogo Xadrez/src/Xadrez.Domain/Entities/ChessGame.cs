@@ -62,6 +62,17 @@ namespace Xadrez.Domain
             return _capturedPieces.Where(p => p.Color == color).ToArray();
         }
 
+        public bool CanMove(Piece piece)
+        {
+            foreach (var isPossibleMovements in piece.PossibleMovements())
+            {
+                if (isPossibleMovements)
+                    return true;
+            }
+
+            throw new ChessGameException(SystemMessages.CanNotMove);
+        }
+
         public void MovePiece(ChessPosition origin, ChessPosition destiny)
         {
             if (ValidPositionsForMovement(origin, destiny))
