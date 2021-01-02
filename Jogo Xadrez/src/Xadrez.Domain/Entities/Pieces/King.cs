@@ -13,8 +13,12 @@ namespace Xadrez.Domain.Entities.Pieces
 
         public override bool ValidMovement(Position destiny)
         {
+            // Same Position
+            if (destiny.Equals(Position))
+                return false;
+
             // You can only move one house at a time
-            if (destiny.Line > Position.Line + 1 || destiny.Column > Position.Column + 1 || destiny.Line < Position.Line - 1 || destiny.Column < Position.Column - 1)
+            if (MovedAHouse(destiny) == false)
                 return false;
 
             // check that there is no piece of the same color in the destination
@@ -65,11 +69,17 @@ namespace Xadrez.Domain.Entities.Pieces
 
         #region Privates Methods
 
+        private bool MovedAHouse(Position destiny)
+        {
+            if (destiny.Line > Position.Line + 1 || destiny.Column > Position.Column + 1 || destiny.Line < Position.Line - 1 || destiny.Column < Position.Column - 1)
+                return false;
+
+            return true;
+        }
+
         private bool FreeAway(Position destiny)
         {
-            bool stopAtTheNextIteration = false;
-
-            return ChessHelper.PermittedPosition(Board, destiny, Color, ref stopAtTheNextIteration);
+            return ChessHelper.PermittedPosition(Board, destiny, Color);
         }
 
         private bool IsInCheckAfterCapture(Position destiny)

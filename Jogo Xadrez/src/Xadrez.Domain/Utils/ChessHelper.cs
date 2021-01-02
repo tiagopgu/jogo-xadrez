@@ -5,20 +5,12 @@ namespace Xadrez.Domain.Utils
 {
     public static class ChessHelper
     {
-        public static bool PermittedPosition(Board board, Position position, Color currentColor, ref bool stopAtTheNextIteration)
+        public static bool PermittedPosition(Board board, Position position, Color currentColor)
         {
-            if (stopAtTheNextIteration)
-                return false;
-
             Piece piece = board.GetPiece(position);
 
-            if (piece != null)
-            {
-                if (piece.Color == currentColor)
-                    return false;
-
-                stopAtTheNextIteration = true;
-            }
+            if (piece != null && piece.Color == currentColor)
+                return false;
 
             return true;
         }

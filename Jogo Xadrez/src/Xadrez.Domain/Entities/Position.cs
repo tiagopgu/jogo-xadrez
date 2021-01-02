@@ -16,5 +16,18 @@
         {
             return $"({Line}, {Column})";
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+                return false;
+
+            if (obj is Position == false)
+                return false;
+
+            Position positionTest = obj as Position;
+
+            return positionTest.Line == Line && positionTest.Column == Column;
+        }
     }
 }

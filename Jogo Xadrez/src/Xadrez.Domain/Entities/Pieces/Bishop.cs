@@ -14,15 +14,11 @@ namespace Xadrez.Domain.Entities.Pieces
 
         public override bool ValidMovement(Position destiny)
         {
-            // It cannot be move to the same position
-            if (destiny.Line == Position.Line && destiny.Column == Position.Column)
+            // Same Position
+            if (destiny.Equals(Position))
                 return false;
 
-            // Can only move diagonally
-            int totalLinesMoved = Math.Abs(destiny.Line - Position.Line);
-            int totalColumnsMoved = Math.Abs(destiny.Column - Position.Column);
-
-            if (totalLinesMoved != totalColumnsMoved)
+            if (WalkedDiagonally(destiny) == false)
                 return false;
 
             return FreeWay(destiny);
@@ -35,66 +31,90 @@ namespace Xadrez.Domain.Entities.Pieces
 
         #region Privates Methods
 
+        private bool WalkedDiagonally(Position destiny)
+        {
+            int totalLinesMoved = Math.Abs(destiny.Line - Position.Line);
+            int totalColumnsMoved = Math.Abs(destiny.Column - Position.Column);
+
+            return totalLinesMoved == totalColumnsMoved;
+        }
+
         private bool FreeWay(Position destiny)
         {
             Position currentPosition = new Position(0, 0);
-            bool stopAtTheNextIteration = false;
 
             for (int i = GetInitialCursorValue(destiny); ContinueIteration(destiny, i); i = NextIteration(destiny, i))
             {
                 for (int j = GetInitialCursorValue(destiny, true); ContinueIteration(destiny, j, true); j = NextIteration(destiny, j, true))
                 {
-                    int totalLinesWalked = Math.Abs(i - Position.Line);
-                    int totalColumnsWalked = Math.Abs(j - Position.Column);
+                    currentPosition.Line = (byte)i;
+                    currentPosition.Column = (byte)j;
 
-                    if (totalLinesWalked == totalColumnsWalked)
-                    {
-                        currentPosition.Line = (byte)i;
-                        currentPosition.Column = (byte)j;
-
-                        if (ChessHelper.PermittedPosition(Board, currentPosition, Color, ref stopAtTheNextIteration) == false)
-                            return false;
-                    }
+                    if (WalkedDiagonally(currentPosition) && (ChessHelper.PermittedPosition(Board, currentPosition, Color) == false || TherePieceInThePreviousHouse(currentPosition)))
+                        return false;
                 }
             }
 
             return true;
         }
 
+        private bool TherePieceInThePreviousHouse(Position currentPosition)
+        {
+            Position previousPosition;
+
+            // Up
+            if (currentPosition.Line > Position.Line)
+                previousPosition = new Position((byte)(currentPosition.Line - 1), (byte)(currentPosition.Column + (currentPosition.Column > Position.Column ? -1 : 1)));
+            else // Down
+                previousPosition = new Position((byte)(currentPosition.Line + 1), (byte)(currentPosition.Column + (currentPosition.Column < Position.Column ? 1 : -1)));
+
+            return Board.ExistsPiece(previousPosition) && Board.GetPiece(previousPosition)?.Color != Color;
+        }
+
         private int GetInitialCursorValue(Position destiny, bool secondCursor = false)
         {
-            if (destiny.Line > Position.Line) // Up
+            // Up
+            if (destiny.Line > Position.Line)
             {
-                if (destiny.Column > Position.Column) // At the rigth
+                // At the rigth
+                if (destiny.Column > Position.Column)
                     return (secondCursor) ? Position.Column + 1 : Position.Line + 1;
-                else // At the left
-                    return (secondCursor) ? Position.Column - 1 : Position.Line + 1;
+
+                // At the left
+                return (secondCursor) ? Position.Column - 1 : Position.Line + 1;
             }
-            else // Down
-            {
-                if (destiny.Column < Position.Column) // At the left
-                    return (secondCursor) ? Position.Column - 1 : Position.Line - 1;
-                else
-                    return (secondCursor) ? Position.Column + 1 : Position.Line - 1;
-            }
+
+            // Down
+
+            // At the left
+            if (destiny.Column < Position.Column)
+                return (secondCursor) ? Position.Column - 1 : Position.Line - 1;
+
+            // At the rigth
+            return (secondCursor) ? Position.Column + 1 : Position.Line - 1;
         }
 
         private bool ContinueIteration(Position destiny, int currentIteration, bool secondIteration = false)
         {
-            if (destiny.Line > Position.Line) // Up
+            // Up
+            if (destiny.Line > Position.Line)
             {
-                if (destiny.Column > Position.Column) // At the rigth
+                // At the rigth
+                if (destiny.Column > Position.Column)
                     return (secondIteration) ? currentIteration <= destiny.Column : currentIteration <= destiny.Line;
-                else // At the left
-                    return (secondIteration) ? currentIteration >= destiny.Column : currentIteration <= destiny.Line;
+
+                // At the left
+                return (secondIteration) ? currentIteration >= destiny.Column : currentIteration <= destiny.Line;
             }
-            else // Down
-            {
-                if (destiny.Column < Position.Column) // At the left
-                    return (secondIteration) ? currentIteration >= destiny.Column : currentIteration >= destiny.Line;
-                else
-                    return (secondIteration) ? currentIteration <= destiny.Column : currentIteration >= destiny.Line;
-            }
+
+            // Down
+
+            // At the left
+            if (destiny.Column < Position.Column)
+                return (secondIteration) ? currentIteration >= destiny.Column : currentIteration >= destiny.Line;
+
+            // At the right
+            return (secondIteration) ? currentIteration <= destiny.Column : currentIteration >= destiny.Line;
         }
 
         private int NextIteration(Position destiny, int currentIteration, bool secondIterator = false)

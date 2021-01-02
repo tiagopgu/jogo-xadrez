@@ -1,5 +1,4 @@
-﻿using System;
-using Xadrez.Domain.Entities.Enums;
+﻿using Xadrez.Domain.Entities.Enums;
 
 namespace Xadrez.Domain.Entities.Pieces
 {

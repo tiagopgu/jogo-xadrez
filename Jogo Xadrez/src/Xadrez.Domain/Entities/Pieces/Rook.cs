@@ -13,12 +13,11 @@ namespace Xadrez.Domain.Entities.Pieces
 
         public override bool ValidMovement(Position destiny)
         {
-            // It cannot be move to the same position
-            if (destiny.Line == Position.Line && destiny.Column == Position.Column)
+            // Same Position
+            if (destiny.Equals(Position))
                 return false;
 
-            // You can only walk horizontally or vertically.
-            if (destiny.Line != Position.Line && destiny.Column != Position.Column)
+            if (WalkedHorizontallyOrVertically(destiny) == false)
                 return false;
 
             return FreeAway(destiny);
@@ -31,57 +30,60 @@ namespace Xadrez.Domain.Entities.Pieces
 
         #region Privates Methods
 
+        private bool WalkedHorizontallyOrVertically(Position destiny)
+        {
+            if (destiny.Line != Position.Line && destiny.Column != Position.Column)
+                return false;
+
+            return true;
+        }
+
         private bool FreeAway(Position destiny)
         {
             Position currentPosition = new Position(0, 0);
-            bool stopAtTheNexIteration = false;
 
             for (int i = GetInitialCursorValue(destiny); ContinueIteration(destiny, i); i = NextIteration(destiny, i))
             {
                 currentPosition.Line = (destiny.Line == Position.Line) ? Position.Line : (byte)i;
                 currentPosition.Column = (destiny.Column == Position.Column) ? Position.Column : (byte)i;
 
-                if (ChessHelper.PermittedPosition(Board, currentPosition, Color, ref stopAtTheNexIteration) == false)
+                if (ChessHelper.PermittedPosition(Board, currentPosition, Color) == false || TherePieceInThePreviousHouse(currentPosition))
                     return false;
             }
 
             return true;
         }
 
+        private bool TherePieceInThePreviousHouse(Position currentPosition)
+        {
+            Position previousPosition;
+
+            if (currentPosition.Line == Position.Line)
+                previousPosition = new Position(currentPosition.Line, (byte)(currentPosition.Column + (currentPosition.Column > Position.Column ? -1 : 1)));
+            else
+                previousPosition = new Position((byte)(currentPosition.Line + (currentPosition.Line > Position.Line ? -1 : 1)), currentPosition.Column);
+
+            return Board.ExistsPiece(previousPosition) && Board.GetPiece(previousPosition)?.Color != Color;
+        }
+
         private int GetInitialCursorValue(Position destiny)
         {
-            if (destiny.Line == Position.Line) // Horizontal
-            {
-                if (destiny.Column > Position.Column) // At the right
-                    return Position.Column + 1;
-                else // At the left
-                    return Position.Column - 1;
-            }
-            else // Vertical
-            {
-                if (destiny.Line > Position.Line) // Up
-                    return Position.Line + 1;
-                else // Down
-                    return Position.Line - 1;
-            }
+            // Horizontal
+            if (destiny.Line == Position.Line)
+                return Position.Column + (destiny.Column > Position.Column ? 1 : -1);
+
+            // Vertical
+            return Position.Line + (destiny.Line > Position.Line ? 1 : -1);
         }
 
         private bool ContinueIteration(Position destiny, int currentIteration)
         {
-            if (destiny.Line == Position.Line) // Horizontal
-            {
-                if (destiny.Column > Position.Column) // At the right
-                    return currentIteration <= destiny.Column;
-                else // At the left
-                    return currentIteration >= destiny.Column;
-            }
-            else // Vertical
-            {
-                if (destiny.Line > Position.Line) // Up
-                    return currentIteration <= destiny.Line;
-                else // Down
-                    return currentIteration >= destiny.Line;
-            }
+            // Horizontal
+            if (destiny.Line == Position.Line)
+                return destiny.Column > Position.Column ? currentIteration <= destiny.Column : currentIteration >= destiny.Column;
+
+            // Vertical
+            return destiny.Line > Position.Line ? currentIteration <= destiny.Line : currentIteration >= destiny.Line;
         }
 
         private int NextIteration(Position destiny, int currentIteration)

@@ -14,8 +14,8 @@ namespace Xadrez.Domain.Entities.Pieces
 
         public override bool ValidMovement(Position destiny)
         {
-            // It cannot be move to the same position
-            if (destiny.Line == Position.Line && destiny.Column == Position.Column)
+            // Same Position
+            if (destiny.Equals(Position))
                 return false;
 
             // can only walk in an "L" shape
@@ -31,15 +31,13 @@ namespace Xadrez.Domain.Entities.Pieces
 
         private bool AllowedPosition(Position destiny)
         {
-            var stopAtTheNextIteration = false;
-
             int totalLinesWalked = Math.Abs(destiny.Line - Position.Line);
             int totalColumnsWalked = Math.Abs(destiny.Column - Position.Column);
 
-            if (totalLinesWalked == 2 && totalColumnsWalked == 1 && ChessHelper.PermittedPosition(Board, destiny, Color, ref stopAtTheNextIteration))
+            if (totalLinesWalked == 2 && totalColumnsWalked == 1 && ChessHelper.PermittedPosition(Board, destiny, Color))
                 return true;
 
-            if (totalColumnsWalked == 2 && totalLinesWalked == 1 && ChessHelper.PermittedPosition(Board, destiny, Color, ref stopAtTheNextIteration))
+            if (totalColumnsWalked == 2 && totalLinesWalked == 1 && ChessHelper.PermittedPosition(Board, destiny, Color))
                 return true;
 
             return false;
