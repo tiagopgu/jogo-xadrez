@@ -71,8 +71,8 @@ namespace Xadrez.Domain
 
         public bool CanMove(Piece piece)
         {
-            if (piece is King == false && KingIsInCheck(CurrentPlayer))
-                throw new ChessGameException(SystemMessages.KingIsInCheck);
+            //if (piece is King == false && KingIsInCheck(CurrentPlayer))
+            //    throw new ChessGameException(SystemMessages.KingIsInCheck);
 
             foreach (var isPossibleMovements in piece.PossibleMovements())
             {
@@ -115,11 +115,7 @@ namespace Xadrez.Domain
 
         private Position GetPosition(ChessPosition position)
         {
-            Position newPosition = new Position(position?.Line ?? 0, (byte)((position?.Column ?? 'a') - 'a' + 1));
-
-            Board.ValidatePosition(newPosition);
-
-            return newPosition;
+            return new Position(position?.Line ?? 0, (byte)((position?.Column ?? 'a') - 'a' + 1));
         }
 
         private bool ValidPositionsForMovement(ChessPosition origin, ChessPosition destiny)

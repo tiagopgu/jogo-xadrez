@@ -62,7 +62,8 @@ namespace Xadrez.Domain.Entities
 
         private Position GetAdjustedPosition(Position position)
         {
-            ValidatePosition(position);
+            if (ValidPosition(position) == false)
+                throw new BoardException("Invalid position");
 
             byte line = (byte)(AmountLines - position.Line);
             byte column = (byte)(position.Column - 1);
@@ -70,13 +71,12 @@ namespace Xadrez.Domain.Entities
             return new Position(line, column);
         }
 
-        public void ValidatePosition(Position position)
+        public bool ValidPosition(Position position)
         {
             bool validLine = position.Line > 0 && position.Line <= AmountLines;
             bool validColumn = position.Column > 0 && position.Column <= AmountColumns;
 
-            if (validLine == false || validColumn == false)
-                throw new BoardException("Invalid position");
+            return validLine && validColumn;
         }
 
         #endregion
