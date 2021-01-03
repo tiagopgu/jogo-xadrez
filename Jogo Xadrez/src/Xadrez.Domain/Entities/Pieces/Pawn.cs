@@ -1,4 +1,5 @@
-﻿using Xadrez.Domain.Entities.Enums;
+﻿using System;
+using Xadrez.Domain.Entities.Enums;
 
 namespace Xadrez.Domain.Entities.Pieces
 {
@@ -12,52 +13,18 @@ namespace Xadrez.Domain.Entities.Pieces
 
         public override bool ValidMovement(Position destiny)
         {
-            if (Color == Color.White)
-            {
-                // Can't go back
-                if (destiny.Line <= Position.Line)
-                    return false;
-
-                // You can only advance a maximum of two spaces
-                if (destiny.Line > Position.Line + 2)
-                    return false;
-
-                // You can only advance more than one space in the first move
-                if (AmountMoviments > 0 && destiny.Line >= Position.Line + 2)
-                    return false;
-
-                // In the capture movement, only one space can be advanced
-                if ((destiny.Line != Position.Line && destiny.Column != Position.Column) && (destiny.Line > Position.Line + 1 || destiny.Column > Position.Column + 1 || destiny.Column < Position.Column - 1))
-                    return false;
-            }
-            else
-            {
-                // Can't go back
-                if (destiny.Line >= Position.Line)
-                    return false;
-
-                // You can only advance a maximum of two spaces
-                if (destiny.Line < Position.Line - 2)
-                    return false;
-
-                // You can only advance more than one space in the first move
-                if (AmountMoviments > 0 && destiny.Line <= Position.Line - 2)
-                    return false;
-
-                // In the capture movement, only one space can be advanced
-                if ((destiny.Line != Position.Line && destiny.Column != Position.Column) && (destiny.Line < Position.Line - 1 || destiny.Column > Position.Column + 1 || destiny.Column < Position.Column - 1))
-                    return false;
-            }
-
-            // Cannot move horizontally
-            if (destiny.Line == Position.Line && destiny.Column != Position.Column)
+            if (destiny.Equals(Position))
                 return false;
 
-            // Capture movement is only valid if piece exists at destination
-            if ((destiny.Line != Position.Line && destiny.Column != Position.Column) && (Board.ExistsPiece(destiny) == false))
+            if (WalkedForward(destiny) == false)
                 return false;
 
-            // Path to destination is not clear
+            if (ValidAdvancedSpaces(destiny) == false)
+                return false;
+
+            if (IsCaptureMovement(destiny) && ValidCaptureMovement(destiny) == false)
+                return false;
+
             if (FreeWay(destiny) == false)
                 return false;
 
@@ -88,29 +55,76 @@ namespace Xadrez.Domain.Entities.Pieces
 
         #region Privates Methods
 
-        private bool FreeWay(Position destiny)
+        private bool WalkedForward(Position destiny)
         {
-            if (Color == Color.White)
-            {
-                // check parts in advance
-                if (destiny.Line != Position.Line && destiny.Column == Position.Column)
-                    for (byte i = (byte)(Position.Line + 1); i <= destiny.Line; i++)
-                        if (Board.ExistsPiece(new Position(i, Position.Column)))
-                            return false;
-            }
-            else
-            {
-                if (destiny.Line != Position.Line && destiny.Column == Position.Column)
-                    for (byte i = (byte)(Position.Line - 1); i >= destiny.Line; i--)
-                        if (Board.ExistsPiece(new Position(i, Position.Column)))
-                            return false;
-            }
-
-            // Check capture movement
-            if ((destiny.Line != Position.Line && destiny.Column != Position.Column) && (Board.GetPiece(destiny).Color == Color))
+            if (destiny.Line == Position.Line && destiny.Column != Position.Column)
                 return false;
 
+            return Color == Color.White ? destiny.Line > Position.Line : destiny.Line < Position.Line;
+        }
+
+        private bool ValidAdvancedSpaces(Position destiny)
+        {
+            int totalValidLines = AmountMoviments == 0 ? 2 : 1;
+            int advancedTotalLines = Math.Abs(destiny.Line - Position.Line);
+
+            return advancedTotalLines <= totalValidLines;
+        }
+
+        private bool IsCaptureMovement(Position destiny)
+        {
+            return destiny.Line != Position.Line && destiny.Column != Position.Column;
+        }
+
+        private bool ValidCaptureMovement(Position destiny)
+        {
+            if (IsCaptureMovement(destiny))
+            {
+                // In the capture movement, only one space can be advanced
+                if (Color == Color.White)
+                {
+                    if (destiny.Line > Position.Line + 1 || destiny.Column > Position.Column + 1 || destiny.Column < Position.Column - 1)
+                        return false;
+                }
+                else
+                {
+                    if (destiny.Line < Position.Line - 1 || destiny.Column > Position.Column + 1 || destiny.Column < Position.Column - 1)
+                        return false;
+                }
+
+                if (Board.ExistsPiece(destiny) == false)
+                    return false;
+
+                if (Board.GetPiece(destiny).Color == Color)
+                    return false;
+            }
+
             return true;
+        }
+
+        private bool FreeWay(Position destiny)
+        {
+            if (destiny.Line != Position.Line && destiny.Column == Position.Column)
+                for (int i = GetInitialCursorValue(); ContinueIteration(destiny, i); i = NextIteration(i))
+                    if (Board.ExistsPiece(new Position((byte)i, Position.Column)))
+                        return false;
+
+            return true;
+        }
+
+        private int GetInitialCursorValue()
+        {
+            return Position.Line + (Color == Color.White ? 1 : -1);
+        }
+
+        private bool ContinueIteration(Position destiny, int currentIteration)
+        {
+            return Color == Color.White ? currentIteration <= destiny.Line : currentIteration >= destiny.Line;
+        }
+
+        private int NextIteration(int currentIteration)
+        {
+            return Color == Color.White ? ++currentIteration : --currentIteration;
         }
 
         #endregion
