@@ -71,8 +71,10 @@ namespace Xadrez.Domain
 
         public bool CanMove(Piece piece)
         {
-            //if (piece is King == false && KingIsInCheck(CurrentPlayer))
-            //    throw new ChessGameException(SystemMessages.KingIsInCheck);
+            if (KingIsInCheck(CurrentPlayer) && CanGetTheKingOutOfCheck(piece) == false)
+            {
+                throw new ChessGameException(SystemMessages.KingIsInCheck);
+            }
 
             foreach (var isPossibleMovements in piece.PossibleMovements())
             {
@@ -91,6 +93,9 @@ namespace Xadrez.Domain
 
                 if (piece.ValidMovement(GetPosition(destiny)) == false)
                     throw new ChessGameException(SystemMessages.InvalidMovement);
+
+                if (KingIsInCheck(CurrentPlayer) && ValidPositionToGetTheKingOutOfCheck(piece, destiny) == false)
+                    throw new ChessGameException(SystemMessages.InvalidMovementToRemoveCheck);
 
                 RemovePiece(origin);
 
@@ -209,6 +214,66 @@ namespace Xadrez.Domain
         {
             ChangePlayer();
             Shift++;
+        }
+
+        private bool CanGetTheKingOutOfCheck(Piece piece)
+        {
+            King king = _piecesInPlay.Where(p => p is King && p.Color == CurrentPlayer).FirstOrDefault() as King;
+
+            if (king != null && KingIsInCheck(CurrentPlayer))
+            {
+                ChessPosition position = new ChessPosition(0, ' ');
+                bool[,] possibleMovements = piece.PossibleMovements();
+                string columnIdentifier = "abcdefgh";
+
+                for (int i = possibleMovements.GetLength(0) - 1; i >= 0; i--)
+                {
+                    for (int j = 0; j < possibleMovements.GetLength(1); j++)
+                    {
+                        if (possibleMovements[i, j])
+                        {
+                            position.Line = (byte)(possibleMovements.GetLength(0) - i);
+                            position.Column = columnIdentifier[j];
+                            
+                            if (ValidPositionToGetTheKingOutOfCheck(piece, position))
+                                return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool ValidPositionToGetTheKingOutOfCheck(Piece piece, ChessPosition chessPositionDestiny)
+        {
+            bool canGetTheKingOutOfCheck = true;
+            Position positionDestiny = GetPosition(chessPositionDestiny);
+
+            if (Board.ExistsPiece(positionDestiny))
+            {
+                Piece pieceTest = Board.RemovePiece(positionDestiny);
+
+                if (KingIsInCheck(CurrentPlayer))
+                    canGetTheKingOutOfCheck = false;
+
+                Board.AddPiece(pieceTest, positionDestiny);
+            }
+            else
+            {
+                Position currentPosition = piece.Position;
+
+                Board.RemovePiece(currentPosition);
+                Board.AddPiece(piece, positionDestiny);
+
+                if (KingIsInCheck(CurrentPlayer))
+                    canGetTheKingOutOfCheck = false;
+
+                Board.RemovePiece(positionDestiny);
+                Board.AddPiece(piece, currentPosition);
+            }
+
+            return canGetTheKingOutOfCheck;
         }
 
         #endregion

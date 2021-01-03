@@ -31,7 +31,7 @@ namespace Xadrez.Domain.Entities.Pieces
             return true;
         }
 
-        public bool ValidateCaptureMovement(Position destiny, Piece pieceDestiny)
+        public bool CanCapture(Position destiny, Piece pieceDestiny)
         {
             if (pieceDestiny != null && pieceDestiny.Color != Color)
             {

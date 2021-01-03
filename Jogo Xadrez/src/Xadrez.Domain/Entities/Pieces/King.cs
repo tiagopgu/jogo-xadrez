@@ -53,7 +53,7 @@ namespace Xadrez.Domain.Entities.Pieces
                         if (piece is Pawn == false && piece.ValidMovement(destiny))
                             return true;
 
-                        if (piece is Pawn && (piece as Pawn).ValidateCaptureMovement(destiny, this))
+                        if (piece is Pawn && (piece as Pawn).CanCapture(destiny, this))
                             return true;
                     }
                 }
