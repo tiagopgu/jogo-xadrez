@@ -63,7 +63,7 @@ namespace Xadrez.Domain.Entities
         private Position GetAdjustedPosition(Position position)
         {
             if (ValidPosition(position) == false)
-                throw new BoardException("Invalid position");
+                throw new BoardException("The reported position is invalid");
 
             byte line = (byte)(AmountLines - position.Line);
             byte column = (byte)(position.Column - 1);

@@ -21,9 +21,9 @@ namespace Xadrez.Console
 
                     try
                     {
-                        if (game.Shift > 1 && game.KingIsInCheck(game.CurrentPlayer))
+                        if (game.KingIsInCheck(game.CurrentPlayer))
                         {
-                            Screen.PrintAlert($"The {game.CurrentPlayer.ToString().ToLower()} king is in check.");
+                            Screen.PrintMessage($"The {game.CurrentPlayer.ToString().ToLower()} king is in check.", TypeInfo.Alert);
                         }
 
                         System.Console.Write("\tEnter the position of the piece to be moved (ex.: c5): ");
@@ -46,27 +46,37 @@ namespace Xadrez.Console
                                     game.MovePiece(startPosition, finalPosition);
                             }
                         }
+
+                        if (game.GameEnded)
+                        {
+                            Screen.PrintBoard(game.Board);
+                            Screen.PrintInfo(game);
+
+                            Screen.PrintMessage("CHECKMATE!!!", TypeInfo.Alert);
+                            Screen.PrintMessage($"The game is over. The winner was the {game.CurrentPlayer.ToString().ToLower()} pieces");
+                            System.Console.ReadKey();
+                        }
                     }
                     catch (FormatException)
                     {
-                        System.Console.Write($"\n\tTypo: {SystemMessages.Typo}. {SystemMessages.TryAgain}.");
+                        Screen.PrintMessage($"Typo: {SystemMessages.Typo}. {SystemMessages.TryAgain}.", TypeInfo.Warning);
                         System.Console.ReadKey(true);
                     }
                     catch (ChessGameException ex)
                     {
-                        System.Console.Write($"\n\tInvalid play: {ex.Message}. {SystemMessages.TryAgain}.");
+                        Screen.PrintMessage($"Invalid play: {ex.Message}. {SystemMessages.TryAgain}.", TypeInfo.Warning);
                         System.Console.ReadKey(true);
                     }
                     catch (BoardException ex)
                     {
-                        System.Console.Write($"\n\tInvalid position: {ex.Message}. {SystemMessages.TryAgain}.");
+                        Screen.PrintMessage($"Invalid position: {ex.Message}. {SystemMessages.TryAgain}.", TypeInfo.Warning);
                         System.Console.ReadKey(true);
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine("\n\tUnexpected error: " + ex.Message);
+                Screen.PrintMessage("Unexpected error: " + ex.Message, TypeInfo.Alert);
             }
         }
     }

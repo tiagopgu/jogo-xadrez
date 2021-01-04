@@ -116,6 +116,20 @@ namespace Xadrez.Domain
             return king != null && king.IsCheckMovement(king.Position);
         }
 
+        public bool CheckmateOccurred(Color color)
+        {
+            if (KingIsInCheck(color) == false)
+                return false;
+
+            foreach (var piece in _piecesInPlay.Where(p => p.Color == color))
+            {
+                if (CanGetTheKingOutOfCheck(piece))
+                    return false;
+            }
+
+            return true;
+        }
+
         #region Privates Methods
 
         private Position GetPosition(ChessPosition position)
@@ -213,7 +227,16 @@ namespace Xadrez.Domain
         private void UpdateGame()
         {
             ChangePlayer();
-            Shift++;
+
+            if (CheckmateOccurred(CurrentPlayer))
+            {
+                ChangePlayer();
+                GameEnded = true;
+            }
+            else
+            {
+                Shift++;
+            }
         }
 
         private bool CanGetTheKingOutOfCheck(Piece piece)

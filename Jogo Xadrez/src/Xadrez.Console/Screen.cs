@@ -5,6 +5,13 @@ using Xadrez.Domain.Entities.Enums;
 
 namespace Xadrez.Console
 {
+    public enum TypeInfo
+    {
+        Alert,
+        Info,
+        Warning
+    }
+
     public static class Screen
     {
         public static void PrintBoard(Board board)
@@ -46,6 +53,8 @@ namespace Xadrez.Console
 
         public static void PrintInfo(ChessGame chessGame)
         {
+            System.Console.ForegroundColor = ConsoleColor.White;
+
             System.Console.WriteLine($"\t[Shift: {chessGame.Shift}]");
             System.Console.WriteLine($"\t[Current Player: {chessGame?.CurrentPlayer}]\n");
 
@@ -70,11 +79,26 @@ namespace Xadrez.Console
             }
 
             System.Console.WriteLine($"\tCaptured black pieces: [{capturedPieces}]\n");
+
+            System.Console.ResetColor();
         }
 
-        public static void PrintAlert(string message)
+        public static void PrintMessage(string message, TypeInfo typeInfo = TypeInfo.Info)
         {
-            System.Console.BackgroundColor = ConsoleColor.Red;
+            switch (typeInfo)
+            {
+                case TypeInfo.Alert:
+                    System.Console.BackgroundColor = ConsoleColor.Red;
+                    break;
+                case TypeInfo.Info:
+                    System.Console.BackgroundColor = ConsoleColor.DarkCyan;
+                    break;
+                case TypeInfo.Warning:
+                    System.Console.BackgroundColor = ConsoleColor.DarkYellow;
+                    break;
+            }
+
+            System.Console.ForegroundColor = ConsoleColor.White;
             System.Console.WriteLine($"\n\t{message}\n");
             
             System.Console.ResetColor();
