@@ -130,6 +130,17 @@ namespace Xadrez.Domain
             return true;
         }
 
+        public string GetNameOfOpposingPiece(ChessPosition chessPosition)
+        {
+            Position position = GetPosition(chessPosition);
+            Piece piece = Board.GetPiece(position);
+
+            if (piece == null || piece.Color == CurrentPlayer)
+                return null;
+
+            return piece.ToString();
+        } 
+
         #region Privates Methods
 
         private Position GetPosition(ChessPosition position)

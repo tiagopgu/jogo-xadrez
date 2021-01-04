@@ -137,7 +137,7 @@ namespace Xadrez.Console
             }
         }
 
-        public static void MarkPosition(bool[,] positionsMarked)
+        public static void MarkPosition(bool[,] positionsMarked, ChessGame game)
         {
             if (positionsMarked != null)
             {
@@ -148,12 +148,21 @@ namespace Xadrez.Console
                         if (positionsMarked[i, j])
                         {
                             ChessPosition position = new ChessPosition((byte)(positionsMarked.GetLength(0) - i), ScreenConfig.ColumnIdentification[j]);
+                            string piece = game.GetNameOfOpposingPiece(position);
 
                             SetCursorPosition(position);
 
-                            System.Console.ForegroundColor = ConsoleColor.DarkRed;
-
-                            System.Console.Write(" * ");
+                            if (piece != null)
+                            {
+                                System.Console.BackgroundColor = ConsoleColor.Red;
+                                System.Console.ForegroundColor = (game.CurrentPlayer == Color.White) ? ConsoleColor.Black : ConsoleColor.White;
+                                System.Console.Write($" {piece} ");
+                            }
+                            else
+                            {
+                                System.Console.ForegroundColor = ConsoleColor.DarkRed;
+                                System.Console.Write(" * ");
+                            }
 
                             System.Console.ResetColor();
 

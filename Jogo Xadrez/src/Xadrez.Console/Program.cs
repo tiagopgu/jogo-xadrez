@@ -37,7 +37,7 @@ namespace Xadrez.Console
                             {
                                 Screen.SelectPosition(startPosition);
 
-                                Screen.MarkPosition(piece?.PossibleMovements());
+                                Screen.MarkPosition(piece?.PossibleMovements(), game);
 
                                 System.Console.Write("\tEnter the final position of the piece (ex.: d8). Press enter without a position to cancel the selection: ");
                                 ChessPosition finalPosition = Screen.ReadChessPosition();
