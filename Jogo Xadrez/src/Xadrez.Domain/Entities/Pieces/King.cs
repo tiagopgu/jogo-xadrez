@@ -89,11 +89,13 @@ namespace Xadrez.Domain.Entities.Pieces
 
             if (piece != null && piece.Color != Color)
             {
+                Position currentPositionPiece = piece.Position;
+
                 Board.RemovePiece(destiny);
 
                 isCheckMovement = IsCheckMovement(destiny);
 
-                Board.AddPiece(piece, destiny);
+                Board.AddPiece(piece, currentPositionPiece);
             }
 
             return isCheckMovement;
