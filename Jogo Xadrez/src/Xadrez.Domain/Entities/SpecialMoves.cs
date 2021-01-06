@@ -4,7 +4,7 @@ namespace Xadrez.Domain.Entities
 {
     public static class SpecialMoves
     {
-        public static bool IsSmallRock(Piece piece, Position destiny, Board board)
+        public static bool IsSmallCastling(Piece piece, Position destiny, Board board)
         {
             if (piece == null || piece is King == false || piece.AmountMoviments > 0)
                 return false;
@@ -44,7 +44,7 @@ namespace Xadrez.Domain.Entities
 
         public static bool IsSpecialMoves(Piece piece, Position destiny, Board board)
         {
-            return IsSmallRock(piece, destiny, board);
+            return IsSmallCastling(piece, destiny, board);
         }
     }
 }

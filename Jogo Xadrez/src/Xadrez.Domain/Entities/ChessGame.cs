@@ -99,7 +99,7 @@ namespace Xadrez.Domain
 
                 if (SpecialMoves.IsSpecialMoves(piece, GetPosition(destiny), Board))
                 {
-                    if (SpecialMoves.IsSmallRock(piece, GetPosition(destiny), Board))
+                    if (SpecialMoves.IsSmallCastling(piece, GetPosition(destiny), Board))
                     {
                         RemovePiece(origin);
                         AddPiece(piece, destiny);
