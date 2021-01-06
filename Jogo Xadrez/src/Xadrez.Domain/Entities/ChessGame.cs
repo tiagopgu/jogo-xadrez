@@ -302,28 +302,20 @@ namespace Xadrez.Domain
             bool canGetTheKingOutOfCheck = true;
             Position positionDestiny = GetPosition(chessPositionDestiny);
 
-            if (Board.ExistsPiece(positionDestiny))
-            {
-                Piece pieceTest = Board.RemovePiece(positionDestiny);
+            Position currentPosition = piece.Position;
+            Piece capturedPiece = Board.RemovePiece(positionDestiny);
 
-                if (KingIsInCheck(CurrentPlayer))
-                    canGetTheKingOutOfCheck = false;
+            Board.RemovePiece(currentPosition);
+            Board.AddPiece(piece, positionDestiny);
 
-                Board.AddPiece(pieceTest, positionDestiny);
-            }
-            else
-            {
-                Position currentPosition = piece.Position;
+            if (KingIsInCheck(CurrentPlayer))
+                canGetTheKingOutOfCheck = false;
 
-                Board.RemovePiece(currentPosition);
-                Board.AddPiece(piece, positionDestiny);
+            Board.RemovePiece(positionDestiny);
+            Board.AddPiece(piece, currentPosition);
 
-                if (KingIsInCheck(CurrentPlayer))
-                    canGetTheKingOutOfCheck = false;
-
-                Board.RemovePiece(positionDestiny);
-                Board.AddPiece(piece, currentPosition);
-            }
+            if (capturedPiece != null)
+                Board.AddPiece(capturedPiece, positionDestiny);
 
             return canGetTheKingOutOfCheck;
         }
