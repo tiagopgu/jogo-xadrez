@@ -99,20 +99,24 @@ namespace Xadrez.Domain
 
                 if (SpecialMoves.IsSpecialMoves(piece, GetPosition(destiny), Board))
                 {
-                    if (SpecialMoves.IsSmallCastling(piece, GetPosition(destiny), Board))
+                    bool isSmallCastling = SpecialMoves.IsSmallCastling(piece, GetPosition(destiny), Board);
+                    bool isBigCastling = SpecialMoves.IsBigCastling(piece, GetPosition(destiny), Board);
+
+                    if (isSmallCastling || isBigCastling)
                     {
                         RemovePiece(origin);
                         AddPiece(piece, destiny);
 
-                        ChessPosition originRook = new ChessPosition(destiny.Line, 'a');
-                        ChessPosition destinyRook = new ChessPosition(destiny.Line, 'c');
+                        ChessPosition originRook = new ChessPosition(destiny.Line, isSmallCastling ? 'a' : 'h');
+                        ChessPosition destinyRook = new ChessPosition(destiny.Line, isSmallCastling ? 'c' : 'e');
 
                         Piece rook = RemovePiece(originRook);
                         AddPiece(rook, destinyRook);
 
                         rook.IncreaseMovement();
                     }
-                } else
+                }
+                else
                 {
                     RemovePiece(origin);
 
@@ -157,7 +161,7 @@ namespace Xadrez.Domain
                 return null;
 
             return piece.ToString();
-        } 
+        }
 
         #region Privates Methods
 
@@ -286,7 +290,7 @@ namespace Xadrez.Domain
                         {
                             position.Line = (byte)(possibleMovements.GetLength(0) - i);
                             position.Column = columnIdentifier[j];
-                            
+
                             if (ValidPositionToGetTheKingOutOfCheck(piece, position))
                                 return true;
                         }

@@ -14,27 +14,25 @@ namespace Xadrez.Domain.Entities
             if (destiny.Column - piece.Position.Column != -2)
                 return false;
 
-            King king = piece as King;
+            return FreeWayForCastling(piece, destiny, board);
+        }
 
-            Position positionTest = new Position(king.Position.Line, 0);
+        public static bool IsBigCastling(Piece piece, Position destiny, Board board)
+        {
+            Position positionRook = new Position(destiny.Line, (byte)(destiny.Column + 2));
 
-            for (int i = king.Position.Column - 1; i >= destiny.Column; i--)
-            {
-                positionTest.Column = (byte)i;
+            if (IsCastling(piece, destiny, positionRook, board) == false)
+                return false;
 
-                if (board.ExistsPiece(positionTest))
-                    return false;
+            if (destiny.Column - piece.Position.Column != 2)
+                return false;
 
-                if (king.IsCheckMovement(positionTest))
-                    return false;
-            }
-
-            return true;
+            return FreeWayForCastling(piece, destiny, board, true);
         }
 
         public static bool IsSpecialMoves(Piece piece, Position destiny, Board board)
         {
-            return IsSmallCastling(piece, destiny, board);
+            return IsSmallCastling(piece, destiny, board) || IsBigCastling(piece, destiny, board);
         }
 
         #region
@@ -56,6 +54,26 @@ namespace Xadrez.Domain.Entities
 
             if (rook == null || rook is Rook == false || rook.Color != piece.Color || rook.AmountMoviments > 0)
                 return false;
+
+            return true;
+        }
+
+        private static bool FreeWayForCastling(Piece piece, Position destiny, Board board, bool isBigCastling = false)
+        {
+            King king = piece as King;
+            Position positionTest = new Position(king.Position.Line, 0);
+
+
+            for (int i = king.Position.Column + (isBigCastling ? 1 : -1); isBigCastling ? i <= destiny.Column : i >= destiny.Column; i = isBigCastling ? ++i : --i)
+            {
+                positionTest.Column = (byte)i;
+
+                if (board.ExistsPiece(positionTest))
+                    return false;
+
+                if (king.IsCheckMovement(positionTest))
+                    return false;
+            }
 
             return true;
         }
