@@ -91,17 +91,35 @@ namespace Xadrez.Domain
             {
                 Piece piece = GetPiece(origin);
 
-                if (piece.ValidMovement(GetPosition(destiny)) == false)
+                if (piece.ValidMovement(GetPosition(destiny)) == false && SpecialMoves.IsSpecialMoves(piece, GetPosition(destiny), Board) == false)
                     throw new ChessGameException(SystemMessages.InvalidMovement);
 
                 if (KingIsInCheck(CurrentPlayer) && ValidPositionToGetTheKingOutOfCheck(piece, destiny) == false)
                     throw new ChessGameException(SystemMessages.InvalidMovementToRemoveCheck);
 
-                RemovePiece(origin);
+                if (SpecialMoves.IsSpecialMoves(piece, GetPosition(destiny), Board))
+                {
+                    if (SpecialMoves.IsSmallRock(piece, GetPosition(destiny), Board))
+                    {
+                        RemovePiece(origin);
+                        AddPiece(piece, destiny);
 
-                CapturePiece(destiny);
+                        ChessPosition originRook = new ChessPosition(destiny.Line, 'a');
+                        ChessPosition destinyRook = new ChessPosition(destiny.Line, 'c');
 
-                AddPiece(piece, destiny);
+                        Piece rook = RemovePiece(originRook);
+                        AddPiece(rook, destinyRook);
+
+                        rook.IncreaseMovement();
+                    }
+                } else
+                {
+                    RemovePiece(origin);
+
+                    CapturePiece(destiny);
+
+                    AddPiece(piece, destiny);
+                }
 
                 piece.IncreaseMovement();
 
