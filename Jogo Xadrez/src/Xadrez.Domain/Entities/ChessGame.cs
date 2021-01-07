@@ -174,7 +174,10 @@ namespace Xadrez.Domain
                 Position positionPiece = _pieceToBePromoted.Position;
 
                 Board.RemovePiece(positionPiece);
+                _piecesInPlay.Remove(_pieceToBePromoted);
+
                 Board.AddPiece(newPiece, positionPiece);
+                _piecesInPlay.Add(newPiece);
                 
                 _pieceToBePromoted = null;
 
