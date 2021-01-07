@@ -1,4 +1,6 @@
-﻿using Xadrez.Domain.Entities.Pieces;
+﻿using System;
+using Xadrez.Domain.Entities.Enums;
+using Xadrez.Domain.Entities.Pieces;
 
 namespace Xadrez.Domain.Entities
 {
@@ -30,9 +32,31 @@ namespace Xadrez.Domain.Entities
             return FreeWayForCastling(piece, destiny, board, true);
         }
 
-        public static bool IsSpecialMoves(Piece piece, Position destiny, Board board)
+        public static bool IsEnPassant(Piece piece, Position destiny, Board board, int currentShift)
         {
-            return IsSmallCastling(piece, destiny, board) || IsBigCastling(piece, destiny, board);
+            if (piece == null || piece is Pawn == false)
+                return false;
+
+            Position OpposingPawnPosition = new Position(piece.Position.Line, destiny.Column);
+            Piece OpposingPiece = board.GetPiece(OpposingPawnPosition);
+
+            if (OpposingPiece == null || OpposingPiece is Pawn == false || OpposingPiece.Color == piece.Color || OpposingPiece.AmountMoviments > 1)
+                return false;
+
+            if ((OpposingPiece.Color == Color.White && (OpposingPiece.Position.Line - 2) != 2) || (OpposingPiece.Color == Color.Black && (OpposingPiece.Position.Line + 2) != 7))
+                return false;
+
+            Pawn OpposingPawn = OpposingPiece as Pawn;
+
+            if (currentShift - 1 != OpposingPawn.LastMoveShift)
+                return false;
+
+            return true;
+        }
+
+        public static bool IsSpecialMoves(Piece piece, Position destiny, Board board, int currentShift)
+        {
+            return IsSmallCastling(piece, destiny, board) || IsBigCastling(piece, destiny, board) || IsEnPassant(piece, destiny, board, currentShift);
         }
 
         #region

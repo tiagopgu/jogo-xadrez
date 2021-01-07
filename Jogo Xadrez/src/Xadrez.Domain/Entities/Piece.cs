@@ -12,14 +12,18 @@ namespace Xadrez.Domain.Entities
 
         public uint AmountMoviments { get; protected set; }
 
+        public uint LastMoveShift { get; protected set; }
+
         public Piece(Color color, Board board)
         {
             Color = color;
             Board = board;
         }
 
-        public void IncreaseMovement()
+        public virtual void IncreaseMovement(uint shift)
         {
+            LastMoveShift = shift;
+
             AmountMoviments++;
         }
 

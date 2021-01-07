@@ -91,29 +91,45 @@ namespace Xadrez.Domain
             {
                 Piece piece = GetPiece(origin);
 
-                if (piece.ValidMovement(GetPosition(destiny)) == false && SpecialMoves.IsSpecialMoves(piece, GetPosition(destiny), Board) == false)
+                bool isSpecialMoves = SpecialMoves.IsSpecialMoves(piece, GetPosition(destiny), Board, Shift);
+
+                if (piece.ValidMovement(GetPosition(destiny)) == false && isSpecialMoves == false)
                     throw new ChessGameException(SystemMessages.InvalidMovement);
 
                 if (KingIsInCheck(CurrentPlayer) && ValidPositionToGetTheKingOutOfCheck(piece, destiny) == false)
                     throw new ChessGameException(SystemMessages.InvalidMovementToRemoveCheck);
 
-                if (SpecialMoves.IsSpecialMoves(piece, GetPosition(destiny), Board))
+                if (isSpecialMoves)
                 {
-                    bool isSmallCastling = SpecialMoves.IsSmallCastling(piece, GetPosition(destiny), Board);
-                    bool isBigCastling = SpecialMoves.IsBigCastling(piece, GetPosition(destiny), Board);
-
-                    if (isSmallCastling || isBigCastling)
+                    bool isEnpassant = SpecialMoves.IsEnPassant(piece, GetPosition(destiny), Board, Shift);
+                    
+                    if (isEnpassant)
                     {
                         RemovePiece(origin);
                         AddPiece(piece, destiny);
 
-                        ChessPosition originRook = new ChessPosition(destiny.Line, isSmallCastling ? 'a' : 'h');
-                        ChessPosition destinyRook = new ChessPosition(destiny.Line, isSmallCastling ? 'c' : 'e');
+                        ChessPosition positionOpposingPawn = new ChessPosition(origin.Line, destiny.Column);
 
-                        Piece rook = RemovePiece(originRook);
-                        AddPiece(rook, destinyRook);
+                        CapturePiece(positionOpposingPawn);
+                    }
+                    else
+                    {
+                        bool isSmallCastling = SpecialMoves.IsSmallCastling(piece, GetPosition(destiny), Board);
+                        bool isBigCastling = SpecialMoves.IsBigCastling(piece, GetPosition(destiny), Board);
 
-                        rook.IncreaseMovement();
+                        if (isSmallCastling || isBigCastling)
+                        {
+                            RemovePiece(origin);
+                            AddPiece(piece, destiny);
+
+                            ChessPosition originRook = new ChessPosition(destiny.Line, isSmallCastling ? 'a' : 'h');
+                            ChessPosition destinyRook = new ChessPosition(destiny.Line, isSmallCastling ? 'c' : 'e');
+
+                            Piece rook = RemovePiece(originRook);
+                            AddPiece(rook, destinyRook);
+
+                            rook.IncreaseMovement(Shift);
+                        }
                     }
                 }
                 else
@@ -125,7 +141,7 @@ namespace Xadrez.Domain
                     AddPiece(piece, destiny);
                 }
 
-                piece.IncreaseMovement();
+                piece.IncreaseMovement(Shift);
 
                 UpdateGame();
             }
