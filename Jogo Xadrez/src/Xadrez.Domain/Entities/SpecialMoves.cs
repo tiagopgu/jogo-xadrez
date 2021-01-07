@@ -54,6 +54,17 @@ namespace Xadrez.Domain.Entities
             return true;
         }
 
+        public static bool IsAPawnPromotion(Piece piece, Position destiny)
+        {
+            if (piece == null || piece is Pawn == false)
+                return false;
+
+            if (piece.Color == Color.White && destiny.Line != 8 || piece.Color == Color.Black && destiny.Line != 1)
+                return false;
+
+            return true;
+        }
+
         public static bool IsSpecialMoves(Piece piece, Position destiny, Board board, int currentShift)
         {
             return IsSmallCastling(piece, destiny, board) || IsBigCastling(piece, destiny, board) || IsEnPassant(piece, destiny, board, currentShift);

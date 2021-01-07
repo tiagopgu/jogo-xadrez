@@ -8,19 +8,31 @@ namespace Xadrez.Console
 {
     class Program
     {
+        private static ChessGame game;
+
         static void Main(string[] args)
         {
             try
             {
-                ChessGame game = new ChessGame();
+                game = new ChessGame();
 
                 while (game.GameEnded == false)
                 {
-                    Screen.PrintBoard(game.Board);
-                    Screen.PrintInfo(game);
+                    RefreshScreen();
 
                     try
                     {
+                        while (game.SomePawnCanBePromoted())
+                        {
+                            Screen.PrintMessage($"The {game.CurrentPlayer} pawn won a promotion.");
+                            System.Console.Write("\tEnter the code for one of the following pieces to promote it: (D - Queen / T - Rook / B - Bishop / C - Knight): ");
+
+                            char codPiece = Screen.ReadCharacter();
+                            game.PromotePawn(codPiece);
+
+                            RefreshScreen();
+                        }
+
                         if (game.KingIsInCheck(game.CurrentPlayer))
                         {
                             Screen.PrintMessage($"The {game.CurrentPlayer.ToString().ToLower()} king is in check.", TypeInfo.Alert);
@@ -49,8 +61,7 @@ namespace Xadrez.Console
 
                         if (game.GameEnded)
                         {
-                            Screen.PrintBoard(game.Board);
-                            Screen.PrintInfo(game);
+                            RefreshScreen();
 
                             Screen.PrintMessage("CHECKMATE!!!", TypeInfo.Alert);
                             Screen.PrintMessage($"The game is over. The winner was the {game.CurrentPlayer.ToString().ToLower()} pieces");
@@ -77,6 +88,15 @@ namespace Xadrez.Console
             catch (Exception ex)
             {
                 Screen.PrintMessage("Unexpected error: " + ex.Message, TypeInfo.Alert);
+            }
+        }
+
+        static void RefreshScreen()
+        {
+            if (game != null)
+            {
+                Screen.PrintBoard(game.Board);
+                Screen.PrintInfo(game);
             }
         }
     }

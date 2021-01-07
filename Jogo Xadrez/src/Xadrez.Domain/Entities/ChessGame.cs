@@ -12,6 +12,7 @@ namespace Xadrez.Domain
     {
         private List<Piece> _piecesInPlay;
         private List<Piece> _capturedPieces;
+        private Piece _pieceToBePromoted;
 
         public Board Board { get; private set; }
         public byte Shift { get; private set; }
@@ -142,6 +143,40 @@ namespace Xadrez.Domain
                 }
 
                 piece.IncreaseMovement(Shift);
+
+                if (SpecialMoves.IsAPawnPromotion(piece, GetPosition(destiny)))
+                    _pieceToBePromoted = piece;
+                else
+                    UpdateGame();
+            }
+        }
+
+        public bool SomePawnCanBePromoted()
+        {
+            return _pieceToBePromoted != null;
+        }
+
+        public void PromotePawn(char codPiece)
+        {
+            Piece newPiece;
+
+            if (_pieceToBePromoted != null)
+            {
+                newPiece = (char.ToUpper(codPiece)) switch
+                {
+                    'D' => new Queen(_pieceToBePromoted.Color, Board),
+                    'T' => new Rook(_pieceToBePromoted.Color, Board),
+                    'B' => new Bishop(_pieceToBePromoted.Color, Board),
+                    'C' => new Knight(_pieceToBePromoted.Color, Board),
+                    _ => throw new ChessGameException("The piece reported is invalid for the promotion of the pawn"),
+                };
+
+                Position positionPiece = _pieceToBePromoted.Position;
+
+                Board.RemovePiece(positionPiece);
+                Board.AddPiece(newPiece, positionPiece);
+                
+                _pieceToBePromoted = null;
 
                 UpdateGame();
             }

@@ -117,6 +117,16 @@ namespace Xadrez.Console
             return new ChessPosition(line, column);
         }
 
+        public static char ReadCharacter()
+        {
+            var key = System.Console.ReadKey();
+
+            if (char.IsLetterOrDigit(key.KeyChar))
+                return key.KeyChar;
+
+            return ' ';
+        }
+
         public static void SelectPosition(ChessPosition position)
         {
             if (position != null && position.Line > 0 && position.Line <= ScreenConfig.TotalChessGameLines && ScreenConfig.ColumnIdentification.IndexOf(position.Column) != -1)
